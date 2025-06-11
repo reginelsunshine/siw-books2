@@ -22,4 +22,18 @@ public class Author {
 	private String nationality;
 	
 	//TODO gestione immagini (un autore ha UNA SOLA immagine)
+	
+	//TODO metodi setter & getter
+	//TODO metodi equals & hashCode
+	/*------> due oggetti Author li considero uguali se hanno stesso nome,cognome,nazionalità e data di nascita
+             eventualmente anche stessa data di morte (effettuando prima un controllo se dateOfDeath!=null) */
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
