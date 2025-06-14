@@ -15,10 +15,9 @@ public class Book {
 	/* annoto il seguente identificatore con @... per comunicare al framework che la variabile "id" corrisponde ad una 
 	   chiave primaria il cui valore deve essere creato automaticamente dal DBMS ogni volta che viene inserita una 
 	   nuova ennupla Book */
-	 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long Id;
+	private Long id;
 	
 	//@NotBlank   ----->da mettere quando ti occuperai della validazione
 	private String title;

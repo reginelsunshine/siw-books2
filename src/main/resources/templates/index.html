@@ -1,9 +1,38 @@
 <!DOCTYPE html>
 <html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Siw Books 2 - HomePage</title>
+<title>SiwBooks2 - Homepage</title>
+<link rel="stylesheet" href="/css/stile.css" />
 </head>
-<body>
 
+<body>
+	<header>
+		<div th:if="${userDetails != null}">
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+		</div>
+		<div th:if="${userDetails == null}">
+			<h1><a href="/login">Login</a></h1>
+		</div>
+
+	</header>
+
+	<div>
+		<img src="/images/logo-siw.png" width="20%" />
+	</div>
+
+	<h1>Consulta Libri e Autori</h1>
+	<div class="box">
+		<div class="paragraph">
+			<a href="/book"><h3> 
+			<!-- DEVI FARE ATTENZIONE A NON AVER GETMAPPING SULLA STESSA ROTTA ANCHE IN DIVERSE CLASSI -->
+					Elenco Libri: <span th:text="${libri}">provaLibri</span>
+				</h3></a>
+		</div>
+		<div class="paragraph">
+			<a href="/author"><h3>Elenco Autori: <span th:text="${autori}">provaAutori</span></h3></a>
+		</div>
+	</div>
 </body>
+
 </html>
