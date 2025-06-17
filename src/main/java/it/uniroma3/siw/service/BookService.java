@@ -14,4 +14,8 @@ public class BookService {
 	public Iterable<Book> findAll() {
 		return bookRepository.findAll();
 	}
+
+	public Book findById(Long id) {
+		return bookRepository.findById(id).get();
+	}
 }

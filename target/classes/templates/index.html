@@ -7,13 +7,11 @@
 
 <body>
 	<header>
-		<div th:if="${userDetails != null}">
+		<div th:if="${userDetails}">
 			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
 		</div>
-		<div th:if="${userDetails == null}">
-			<h1>
-				<a href="/login">Login</a>
-			</h1>
+		<div th:unless="${user}">
+			<a href="/login">Login</a>
 		</div>
 	</header>
 
@@ -22,7 +20,7 @@
 	</div>
 
 	<h1>Consulta Libri e Autori</h1>
-	
+
 	<div class="box">
 		<div class="paragraph">
 			<h3>
@@ -35,8 +33,7 @@
 		<div class="paragraph">
 			<h3>
 				<a href="/author"> <img src="/images/author-icon.png"
-					alt="Icona libro" width="40" />
-					 Elenco Autori
+					alt="Icona libro" width="40" /> Elenco Autori
 				</a>
 			</h3>
 		</div>

@@ -2,8 +2,28 @@
 <html>
 <head>
 <title>Libro</title>
+<link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
+	<header>
+		<div th:if="${userDetails}">
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${user}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+
+	<div>
+		<a href="/"><img src="/images/logo-siw.png" width="50%" /></a>
+	</div>
+	<h1>Dettagli Libro</h1>
+	<div th:if="${book}">
+		<span th:text="${book.title}">Up!</span> <span
+			th:text="'(' + ${book.year} + ')'">2000</span> <span><img
+			width="5%" th:src=${book.urlImage} /></span>
+	</div>
+	<div th:unless="${book}">Non esiste</div>
 
 </body>
 </html>
