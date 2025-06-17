@@ -15,13 +15,15 @@
 	</header>
 
 	<div>
-		<a href="/"><img src="/images/logo-siw.png" width="50%" /></a>
+		<a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
 	</div>
 	<h1>Dettagli Libro</h1>
 	<div th:if="${book}">
 		<span th:text="${book.title}">Up!</span> <span
-			th:text="'(' + ${book.year} + ')'">2000</span> <span><img
-			width="5%" th:src=${book.urlImage} /></span>
+			th:text="'(' + ${book.yearOfPublication} + ')'">2000</span> <span>
+			<img th:src="@{/book/image/{id}(id=${book.id})}" alt="Immagine libro" width="200"/>
+			
+			</span>
 	</div>
 	<div th:unless="${book}">Non esiste</div>
 

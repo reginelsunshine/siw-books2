@@ -26,6 +26,20 @@ public class Book {
 	private Integer yearOfPublication;
 
 	//TODO gestione immagini (una o più immagini per libro)
+	
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	@Column(columnDefinition = "BYTEA") // per PostgreSQL
+	private byte[] image;
+
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
 
 	@ManyToMany         /*un libro può essere scritto da uno o più autori e un autore può scrivere uno o 
 	                      o più libri*/
