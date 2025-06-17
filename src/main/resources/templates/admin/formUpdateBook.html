@@ -1,42 +1,68 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>SiwBooks2 - Modifica su Libro</title>
-<link rel="stylesheet" href="/css/stile.css" />
+    <title>Modifica Libro</title>
+    <link rel="stylesheet" href="/css/stile.css" />
 </head>
+
 <body>
+    <header>
+        <div th:if="${userDetails}">
+            <span th:text="${userDetails.username}"></span>
+            <a href="/logout">Logout</a>
+        </div>
+        <div th:unless="${userDetails}">
+            <a href="/login">Login</a>
+        </div>
+    </header>
 
-	<header>
-		<div th:if="${userDetails}">
-			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-		</div>
-		<div th:unless="${user}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
+    <div>
+        <a href="/"><img src="/images/logo-siw.png" width="50%" /></a>
+    </div>
 
-	<div>
-		<a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
-	</div>
-	<h1>Aggiorna Libro</h1>
-	<form th:action="@{/admin/book/update/{id}(id=${book.id})}"
-		method="post" enctype="multipart/form-data">
-		<label for="title">Titolo:</label> <input type="text" name="title"
-			th:value="${book.title}" required /> <label for="yearOfPublication">Anno
-			di pubblicazione:</label> <input type="number" name="yearOfPublication"
-			th:value="${book.yearOfPublication}" required /> <label
-			for="authorIds">Autori:</label> <select name="authorIds" multiple
-			required>
-			<option th:each="author : ${allAuthors}" th:value="${author.id}"
-				th:text="${author.name + ' ' + author.surname}"
-				th:selected="${book.authors.contains(author)}"></option>
-		</select> <label for="image">Cambia immagine:</label> <input type="file"
-			name="image" />
+    <h1>Aggiorna libro</h1>
 
-		<button type="submit">Salva modifiche</button>
-	</form>
+    <div th:if="${book}">
+        <div>
+            <span th:text="${book.title}">Titolo libro</span>
+            <span th:text="'(' + ${book.yearOfPublication} + ')'">Anno</span>
+        </div>
 
+        <div>
+            <span>Autori: </span>
+            <div th:each="author : ${book.authors}">
+                <span th:text="${author.name} + ' ' + ${author.surname}">Nome Cognome</span>
+            </div>
+            <a th:href="@{'/admin/book/update/' + ${book.id}}">
+                <button type="button">Modifica Autori</button>
+            </a>
+        </div>
 
+        <form th:action="@{/admin/book/update/{id}(id=${book.id})}" method="post" enctype="multipart/form-data">
+            <label for="title">Titolo:</label>
+            <input type="text" name="title" th:value="${book.title}" required />
 
+            <label for="yearOfPublication">Anno di pubblicazione:</label>
+            <input type="number" name="yearOfPublication" th:value="${book.yearOfPublication}" required />
+
+            <label for="authorIds">Autori:</label>
+            <select name="authorIds" multiple required>
+                <option th:each="author : ${authors}" th:value="${author.id}"
+                        th:text="${author.name + ' ' + author.surname}"
+                        th:selected="${book.authors.contains(author)}"></option>
+            </select>
+
+            <label for="image">Cambia immagine:</label>
+            <input type="file" name="image" />
+
+            <button type="submit">Salva modifiche</button>
+        </form>
+    </div>
+
+    <div th:unless="${book}">
+        Libro non esistente
+    </div>
 </body>
+
 </html>

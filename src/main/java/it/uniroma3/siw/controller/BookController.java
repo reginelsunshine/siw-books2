@@ -1,5 +1,6 @@
 package it.uniroma3.siw.controller;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,41 +56,41 @@ public class BookController {
 		model.addAttribute("book", this.bookService.findById(id));
 		return "book.html";
 	}
-	
-	@GetMapping("/admin/book/update/{id}")
+	/*NB: ANCHE QUA NON FUNZIONAVA PERCHE NON AVEVI ANCORA FATTO I TODO DEI METODI GET/ECC...E LA ROTTA NON E'
+	   ad es admin/formUpdateBook... ma http://localhost:8080/book/update/4 */
+	@GetMapping("/book/update/{id}")
 	public String showUpdateBookForm(@PathVariable("id") Long id, Model model) {
 	    Book book = bookService.findById(id);
 	    Iterable<Author> authors = authorService.findAll(); // o qualsiasi metodo tu abbia
 
 	    model.addAttribute("book", book);
 	    model.addAttribute("authors", authors);
-	    return "admin/updateBook";
+	    return "/formUpdateBook.html";
 	}
 	
 	
-	@PostMapping("/admin/book/update/{id}")
+	@PostMapping("/book/update/{id}")
 	public String updateBook(@PathVariable("id") Long id,
 	                         @RequestParam("title") String title,
 	                         @RequestParam("yearOfPublication") Integer year,
 	                         @RequestParam("authorIds") List<Long> authorIds,
-	                         @RequestParam("image") MultipartFile imageFile) throws Exception {
+	                         @RequestParam("image") MultipartFile imageFile) throws IOException {
 
-	    Book book = this.bookService.findById(id);
+	    Book book = bookService.findById(id);
 	    book.setTitle(title);
 	    book.setYearOfPublication(year);
 
-	    // Associazione autori
-	    Set<Author> authors = new HashSet<>(this.authorService.findAllById(authorIds));
+	    Set<Author> authors = new HashSet<>(authorService.findAllById(authorIds));
 	    book.setAuthors(authors);
 
-	    // Caricamento immagine solo se presente
 	    if (!imageFile.isEmpty()) {
-	        book.setImage(imageFile.getBytes()); // Salva i byte nel campo @Lob
+	        book.setImage(imageFile.getBytes()); // solo se usi @Lob byte[]
 	    }
 
-	    this.bookService.save(book);
+	    bookService.save(book);
 	    return "redirect:/book/" + id;
 	}
+
 	
 	@GetMapping("/book/image/{id}")
 	@ResponseBody
