@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 //RICORDA DI METTERE LE ANNOTAZIONI!!!
 @Controller
 public class IndexController {
-	@GetMapping(value = "/") 
+/*	@GetMapping(value = "/") 
 	public String index(Model model) {
 		return "index.html";
-	}
+	}*/
 }
