@@ -1,4 +1,4 @@
-package it.uniroma3.siw.controller;
+/*package it.uniroma3.siw.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.stereotype.Controller;
@@ -11,4 +11,4 @@ public class IndexController {
 	public String index(Model model) {
 		return "index.html";
 	}*/
-}
+

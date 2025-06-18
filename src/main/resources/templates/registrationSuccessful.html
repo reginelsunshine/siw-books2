@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Libro</title>
+<title>SiwBooks2 - Registrazione conclusa</title>
 <link rel="stylesheet" href="/css/stile.css" />
 </head>
+
 <body>
 	<header>
 		<!-- Mostra solo se utente è autenticato -->
@@ -19,16 +21,16 @@
 	<div>
 		<a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
 	</div>
-	<h1>Dettagli Libro</h1>
-	<div th:if="${book}">
-		<span th:text="${book.title}">Up!</span> <span
-			th:text="'(' + ${book.yearOfPublication} + ')'">2000</span> <span>
-			<img th:src="@{/book/image/{id}(id=${book.id})}" alt="Immagine libro"
-			width="200" />
-
-		</span>
+	<h1>Congratulazioni ti sei registrato!</h1>
+	<div>
+		<span>Nome: </span> <span th:text="${user.name}"></span>
 	</div>
-	<div th:unless="${book}">Non esiste</div>
-
+	<div>
+		<span>Cognome: </span> <span th:text="${user.surname}"></span>
+	</div>
+	<div>
+		<span>Email: </span> <span th:text="${user.email}"></span>
+	</div>
+	<a href="/index">Torna alla HomePage!</a>
 </body>
 </html>

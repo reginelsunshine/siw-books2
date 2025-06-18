@@ -6,10 +6,12 @@
 </head>
 <body>
 	<header>
-		<div th:if="${userDetails}">
+		<!-- Mostra solo se utente è autenticato -->
+		<div th:if="${userDetails != null}">
 			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
 		</div>
-		<div th:unless="${user}">
+		<!-- Mostra solo se utente NON è autenticato -->
+		<div th:if="${userDetails == null}">
 			<a href="/login">Login</a>
 		</div>
 	</header>
@@ -21,9 +23,10 @@
 	<div th:if="${book}">
 		<span th:text="${book.title}">Up!</span> <span
 			th:text="'(' + ${book.yearOfPublication} + ')'">2000</span> <span>
-			<img th:src="@{/book/image/{id}(id=${book.id})}" alt="Immagine libro" width="200"/>
-			
-			</span>
+			<img th:src="@{/book/image/{id}(id=${book.id})}" alt="Immagine libro"
+			width="200" />
+
+		</span>
 	</div>
 	<div th:unless="${book}">Non esiste</div>
 
