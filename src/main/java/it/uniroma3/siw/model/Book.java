@@ -1,5 +1,7 @@
 package it.uniroma3.siw.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.*;
+
 
 /* annoto la classe con @... per comunicare al framework che va predisposta una tabella per memorizzare
    gli oggetti della classe Book */
@@ -99,6 +102,10 @@ public class Book {
 		return Objects.equals(authors, other.authors) && Objects.equals(id, other.id)
 				&& Objects.equals(title, other.title) && Objects.equals(yearOfPublication, other.yearOfPublication);
 	}
-
+	
+	//GESTIONE DELLE RECENSIONI DA PARTE DI UTENTI
+	//nb: a volte da errore poiché non riesce a suggerire gli import ad es di list ecc
+	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+	private List<Review> reviews = new ArrayList<>();
 
 }
