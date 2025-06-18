@@ -25,7 +25,7 @@ public class BookController {
 	//ATTENZIONE, LA ROTTA /BOOK NON FUNZIONAVA PERCHE' HAI DIMENTICATO DI METTERE @AUTOWIRED ANCHE QUI SU bookService
 	@Autowired
 	private BookService bookService;
-	
+
 	@Autowired
 	private AuthorService authorService;
 
@@ -35,12 +35,12 @@ public class BookController {
 	public String getBooks(Model model) { //Model model : oggetto fornito da Spring per passare dati alla vista
 		//model.addAttribute(...) dice a Spring: “aggiungi dei dati da rendere disponibili alla pagina HTML”
 		model.addAttribute("books", this.bookService.findAll()); //"books" è il nome che userò nella pagina HTML (Thymeleaf)
-		                             //this.bookService.findAll() chiama il servizio per ottenere la lista di libri
-		                            //bookService è un componente (@Service) che accede al database tramite BookRepository
-		
+		//this.bookService.findAll() chiama il servizio per ottenere la lista di libri
+		//bookService è un componente (@Service) che accede al database tramite BookRepository
+
 		return "books.html"; //Questo dice a Spring:"Dopo aver eseguito il metodo, mostra la pagina templates/books.html"
 	}
-	
+
 	/* DEBUG TEMPORANEO PER VEDERE SE STAMPA LA LISTA DEI LIBRI
 	@GetMapping("/book")
 	public String getBooks(Model model) {
@@ -58,45 +58,61 @@ public class BookController {
 	}
 	/*NB: ANCHE QUA NON FUNZIONAVA PERCHE NON AVEVI ANCORA FATTO I TODO DEI METODI GET/ECC...E LA ROTTA NON E'
 	   ad es admin/formUpdateBook... ma http://localhost:8080/book/update/4 */
-	@GetMapping("/book/update/{id}")
+	@GetMapping("/admin/book/update/{id}")
 	public String showUpdateBookForm(@PathVariable("id") Long id, Model model) {
-	    Book book = bookService.findById(id);
-	    Iterable<Author> authors = authorService.findAll(); // o qualsiasi metodo tu abbia
+		Book book = bookService.findById(id);
+		Iterable<Author> authors = authorService.findAll(); // o qualsiasi metodo tu abbia
 
-	    model.addAttribute("book", book);
-	    model.addAttribute("authors", authors);
-	    return "/formUpdateBook.html";
+		model.addAttribute("book", book);
+		model.addAttribute("authors", authors);
+		return "/admin/formUpdateBook.html";
 	}
-	
-	
-	@PostMapping("/book/update/{id}")
-	public String updateBook(@PathVariable("id") Long id,
-	                         @RequestParam("title") String title,
-	                         @RequestParam("yearOfPublication") Integer year,
-	                         @RequestParam("authorIds") List<Long> authorIds,
-	                         @RequestParam("image") MultipartFile imageFile) throws IOException {
 
+
+	@PostMapping("/admin/book/update/{id}")
+	public String updateBook(@PathVariable Long id,
+	                         @RequestParam String title,
+	                         @RequestParam Integer yearOfPublication,
+	                         @RequestParam("imageFile") MultipartFile imageFile,
+	                         Model model) throws IOException {
+
+	    // Trovo il libro esistente dal DB
 	    Book book = bookService.findById(id);
-	    book.setTitle(title);
-	    book.setYearOfPublication(year);
-
-	    Set<Author> authors = new HashSet<>(authorService.findAllById(authorIds));
-	    book.setAuthors(authors);
-
-	    if (!imageFile.isEmpty()) {
-	        book.setImage(imageFile.getBytes()); // solo se usi @Lob byte[]
+	    if (book == null) {
+	        // gestione errore libro non trovato
+	        return "error.html";
 	    }
 
+	    // Aggiorno i dati del libro
+	    book.setTitle(title);
+	    book.setYearOfPublication(yearOfPublication);
+
+	    // Se è stata caricata un'immagine, la salvo
+	    if (imageFile != null && !imageFile.isEmpty()) {
+	        byte[] imageBytes = imageFile.getBytes();  // leggo i byte dal file caricato
+	        book.setImage(imageBytes);                  // assegno i byte all'oggetto
+	    }
+
+	    // Salvo il libro aggiornato
 	    bookService.save(book);
+
+	    // Passo il libro aggiornato alla vista
+	    model.addAttribute("book", book);
+
+	    // Ritorno alla pagina dettaglio libro (o altra pagina di conferma)
 	    return "redirect:/book/" + id;
 	}
 
-	
+
+
+
 	@GetMapping("/book/image/{id}")
 	@ResponseBody
 	public byte[] getBookImage(@PathVariable("id") Long id) {
-	    return this.bookService.findById(id).getImage();
+		return this.bookService.findById(id).getImage();
 	}
+
+
 
 
 }

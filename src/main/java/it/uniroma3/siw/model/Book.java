@@ -28,9 +28,10 @@ public class Book {
 	//TODO gestione immagini (una o più immagini per libro)
 	
 	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	@Column(columnDefinition = "BYTEA") // per PostgreSQL
+	@Column(name = "image", columnDefinition = "bytea")
 	private byte[] image;
+
+
 
 
 	public byte[] getImage() {

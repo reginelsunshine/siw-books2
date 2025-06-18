@@ -45,7 +45,7 @@ public class AuthConfiguration {
             .csrf(csrf -> csrf.disable()) // disabilita CSRF (togli in produzione)
             .authorizeHttpRequests(auth -> auth
                 // Pagine accessibili da tutti, autenticati o no
-                .requestMatchers("/", "/index", "/register", "/css/**", "/images/**", "/favicon.ico", "/book", "/author", "/books", "/authors").permitAll()
+                .requestMatchers("/", "/index", "/register", "/css/**", "/images/**", "/favicon.ico", "/book", "/author", "/books", "/authors", "/admin/formUpdateBook/**", "/admin/book/update/**").permitAll()
                 .requestMatchers("/login", "/register").permitAll()
                 // Solo admin può accedere a /admin/**
                 .requestMatchers("/admin/**").hasAuthority("ADMIN") 
