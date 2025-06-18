@@ -1,9 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Insert title here</title>
+<title>SiwBooks2 - Gestione Libri</title>
+<link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
+	<header>
+		<!-- Mostra solo se utente è autenticato -->
+		<div th:if="${userDetails != null}">
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+		</div>
+		<!-- Mostra solo se utente NON è autenticato -->
+		<div th:if="${userDetails == null}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
 
+	<div>
+		<a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
+	</div>
+	<h1>Gestione Libri</h1>
+	
+	<div>
+		<a href="/admin/formNewBook">Inserisci i dati di un nuovo libro</a>
+	</div>
+	
+	<div>
+		<a href="/admin/formUpdateBook">Modifica i dati di un libro</a>
+	</div>
+	
+	<div>
+		<a href="/admin/formNewMovie">Inserisci i dati di un film</a>
+	</div>
+	
+	<div>
+		<a href="/admin/formDeleteBook">Elimina un libro dal sistema</a>
+	</div>
+	
+	<div>
+		<a href="/admin/formDeleteReview">Cancella una recensione di un libro</a>
+	</div>
+	
 </body>
 </html>
