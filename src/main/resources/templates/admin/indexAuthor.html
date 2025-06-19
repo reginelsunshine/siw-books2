@@ -1,10 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+    <title>SiwBooks2 - Gestione Autori</title>
+    <link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
+
+    <header>
+        <!-- Mostra solo se utente è autenticato -->
+        <div th:if="${userDetails != null}">
+            <span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+        </div>
+        <!-- Mostra solo se utente NON è autenticato -->
+        <div th:if="${userDetails == null}">
+            <a href="/login">Login</a>
+        </div>
+    </header>
+
+    <div>
+        <a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
+    </div>
+
+    <h1>Gestione Autori</h1>
+
+    <div>
+        <a href="/admin/formAddAuthor">Inserisci i dati di un nuovo autore</a>
+    </div>
+
+    <div>
+        <a href="/admin/formUpdateAuthor">Modifica i dati di un autore</a>
+    </div>
+
+    <div>
+        <a href="/admin/formDeleteAuthor">Elimina un autore dal sistema</a>
+    </div>
+
+    <div>
+        <a href="/admin/formAddAuthorToBook">Assegna un autore a un libro</a>
+    </div>
 
 </body>
 </html>

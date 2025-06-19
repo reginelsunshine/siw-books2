@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+    <title>Elimina Autore</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+
+<header>
+    <div th:if="${userDetails != null}">
+        <span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+    </div>
+    <div th:unless="${userDetails != null}">
+        <a href="/login">Login</a>
+    </div>
+</header>
+
+<h1>Seleziona un autore da eliminare</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Elimina</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="author : ${authors}">
+            <td th:text="${author.name}">Nome</td>
+            <td th:text="${author.surname}">Cognome</td>
+            <td>
+                <form th:action="@{'/admin/formDeleteAuthor/' + ${author.id}}" method="post" 
+                      onsubmit="return confirm('Sei sicuro di voler eliminare questo autore?');">
+                    <button type="submit">Elimina</button>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="/admin/indexAuthor">Torna indietro</a>
+
+</body>
+</html>

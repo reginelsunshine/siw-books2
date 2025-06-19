@@ -33,7 +33,7 @@
 <h2>Recensioni</h2>
 
 <div th:if="${reviews.size() == 0}">
-    <p>Nessuna recensione disponibile.</p>
+    <p>Nessuno ha ancora recensito questo libro.</p>
 </div>
 
 <ul th:each="review : ${reviews}">

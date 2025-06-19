@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <title>Modifica Autore</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+
+<header>
+    <div th:if="${userDetails!=null}">
+        <span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+    </div>
+    <div th:unless="${user}">
+        <a href="/login">Login</a>
+    </div>
+</header>
+
+<h1>Seleziona un autore da modificare</h1>
+
+<ul>
+    <li th:each="a : ${authors}">
+        <span th:text="${a.name} + ' ' + ${a.surname}"></span> -
+        <a th:href="@{'/admin/formUpdateAuthor?id=' + ${a.id} }">Modifica</a>
+    </li>
+</ul>
+
+<div th:if="${author != null}">
+    <h2>Modifica Autore: <span th:text="${author.name} + ' ' + ${author.surname}"></span></h2>
+
+    <form th:action="@{/admin/formUpdateAuthor}" th:object="${author}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <label>Nome:</label> <input type="text" th:field="*{name}" required /><br>
+        <label>Cognome:</label> <input type="text" th:field="*{surname}" required /><br>
+        <label>Data di nascita:</label> <input type="date" th:field="*{dateOfBirth}" required /><br>
+        <label>Data di morte:</label> <input type="date" th:field="*{dateOfDeath}" /><br>
+        <label>Nazionalità:</label> <input type="text" th:field="*{nationality}" /><br>
+
+        <button type="submit">Salva modifiche</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -117,8 +117,11 @@ public class BookController {
 	public byte[] getBookImage(@PathVariable("id") Long id) {
 		return this.bookService.findById(id).getImage();
 	}
-
-
+	
+	@GetMapping("/admin/indexBook")
+	public String getAdminIndexBook(Model model) {
+		return "/admin/indexBook.html";
+	}
 
 
 }

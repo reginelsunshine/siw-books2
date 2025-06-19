@@ -51,8 +51,8 @@ import javax.sql.DataSource;
                 .csrf().and().cors().disable()
                 .authorizeHttpRequests()
 //                .requestMatchers("/**").permitAll()
-                // chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
-                .requestMatchers(HttpMethod.GET,"/","/index","/register","/css/**", "/images/**", "favicon.ico").permitAll()
+                // chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini e all'elenco libri  e autori che RICORDA è /book devi mettere la rotta del controller get ma non il nome del form
+                .requestMatchers(HttpMethod.GET,"/","/index","/register","/css/**", "/images/**", "favicon.ico", "/book/{id}", "/book", "/author", "/author/{id}").permitAll()
         		// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register 
                 .requestMatchers(HttpMethod.POST,"/register", "/login").permitAll()
                 .requestMatchers(HttpMethod.GET,"/admin/**").hasAnyAuthority(ADMIN_ROLE)

@@ -24,5 +24,10 @@ public class AuthorService {
 	    return authors;
 	}
 
+	public Author findById(Long id) {
+		//NON DIMENTICARE DI CHIAMRE ANCHE .GET() PER OTTENERE L'AUTORE EFFETTIVAMENTE
+		return authorRepository.findById(id).get();
+	}
+
 
 }

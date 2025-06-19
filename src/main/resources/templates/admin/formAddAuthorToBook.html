@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+<title>Assegna libri all'autore</title>
+<link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+
+<header>
+    <div th:if="${userDetails!=null}">
+        <span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+    </div>
+    <div th:unless="${userDetails!=null}">
+        <a href="/login">Login</a>
+    </div>
+</header>
+
+<h1 th:if="${step == 1}">
+    Seleziona autore a cui assegnare libri
+</h1>
+
+<h1 th:if="${step == 2}">
+    Assegna libri a <span th:text="${author.name + ' ' + author.surname}">Autore</span>
+</h1>
+
+<!-- Step 1: lista autori -->
+<div th:if="${step == 1}">
+    <ul>
+        <li th:each="author : ${authors}">
+            <a th:href="@{'/admin/formAddAuthorToBook?id=' + ${author.id}}"
+               th:text="${author.name + ' ' + author.surname}">Nome Autore</a>
+        </li>
+    </ul>
+</div>
+
+<!-- Step 2: form per assegnare libro -->
+<div th:if="${step == 2}">
+    <form th:action="@{'/admin/formAddAuthorToBook?id=' + ${author.id}}" method="post">
+        <label for="book">Seleziona libro da assegnare:</label>
+        <select name="bookId" required>
+            <option th:each="book : ${books}" th:value="${book.id}"
+                    th:text="${book.title + ' (' + book.yearOfPublication + ')'}">Titolo libro</option>
+        </select><br><br>
+        <button type="submit">Assegna libro</button>
+    </form>
+</div>
+
+</body>
+</html>

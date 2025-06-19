@@ -2,24 +2,23 @@
 <html>
 
 <head>
-	<title>
-		SiwBooks2 - Admin Homepage
-	</title>
-	<link rel="stylesheet" href="/css/stile.css" />
+<title>SiwBooks2 - Admin Homepage</title>
+<link rel="stylesheet" href="/css/stile.css" />
 </head>
 
 <body>
 	<header>
 		<div th:if="${userDetails}">
-			<span th:text="${userDetails.username}"></span>
-			<a href="/logout">Logout</a>
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
 		</div>
 		<div th:unless="${user}">
 			<a href="/login">Login</a>
 		</div>
 	</header>
 
-	<div><img src="/images/logo-siw.png" width="20%" /></div>
+	<div>
+		<img src="/images/logo-siw.png" width="20%" />
+	</div>
 	<h1>Consulta l'archivio</h1>
 	<div>
 		<a href="/book">Elenco Libri</a>

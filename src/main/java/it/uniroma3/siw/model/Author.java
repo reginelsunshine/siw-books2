@@ -1,7 +1,9 @@
 package it.uniroma3.siw.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Author {
@@ -18,6 +21,9 @@ public class Author {
 	private String name;
 
 	private String surname;
+	
+	@ManyToMany(mappedBy = "authors")
+	private Set<Book> books = new HashSet<>();
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
@@ -35,6 +41,15 @@ public class Author {
 	/*------> due oggetti Author li considero uguali se hanno stesso nome,cognome,nazionalità e data di nascita
              eventualmente anche stessa data di morte (effettuando prima un controllo se dateOfDeath!=null) */
 
+
+	public Set<Book> getBooks() {
+		return books;
+	}
+	
+	public void setBooks(Set<Book> books) {
+		this.books = books;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -101,6 +116,8 @@ public class Author {
 				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
 				&& Objects.equals(nationality, other.nationality) && Objects.equals(surname, other.surname);
 	}
+
+
 
 
 
