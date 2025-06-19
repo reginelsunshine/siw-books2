@@ -35,7 +35,14 @@
 					th:text="${book.title} + ' (' + ${book.yearOfPublication} + ')'">
 					Titolo (Anno) </a>
 			</div>
+
+			<div th:if="${userDetails != null}">
+				<a th:href="@{'/book/' + ${book.id} + '/review'}">Aggiungi
+					Recensione</a>
+			</div>
 		</li>
+
+
 	</ul>
 
 

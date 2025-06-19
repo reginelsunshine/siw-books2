@@ -17,6 +17,9 @@ public class Review {
 
 	@Column(nullable = false)
 	private String content;
+	
+	@Column(nullable = false)
+	private String title;
 
 	private Integer rating;
 
@@ -66,9 +69,17 @@ public class Review {
 		this.user = user;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(book, content, id, rating, user);
+		return Objects.hash(book, content, id, rating, title, user);
 	}
 
 	@Override
@@ -82,6 +93,7 @@ public class Review {
 		Review other = (Review) obj;
 		return Objects.equals(book, other.book) && Objects.equals(content, other.content)
 				&& Objects.equals(id, other.id) && Objects.equals(rating, other.rating)
-				&& Objects.equals(user, other.user);
+				&& Objects.equals(title, other.title) && Objects.equals(user, other.user);
 	}
+
 }

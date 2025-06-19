@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Book;
+import it.uniroma3.siw.model.Review;
 import it.uniroma3.siw.model.Author;
 import it.uniroma3.siw.service.BookService;
 import it.uniroma3.siw.service.AuthorService;
@@ -54,6 +55,11 @@ public class BookController {
 	@GetMapping("/book/{id}")
 	public String getBook(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("book", this.bookService.findById(id));
+		Book book = bookService.findById(id);
+		List<Review> reviews = bookService.getReviewsForBook(id);
+		model.addAttribute("book", book);
+		model.addAttribute("reviews", reviews);
+
 		return "book.html";
 	}
 	/*NB: ANCHE QUA NON FUNZIONAVA PERCHE NON AVEVI ANCORA FATTO I TODO DEI METODI GET/ECC...E LA ROTTA NON E'

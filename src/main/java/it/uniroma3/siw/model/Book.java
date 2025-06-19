@@ -107,5 +107,10 @@ public class Book {
 	//nb: a volte da errore poiché non riesce a suggerire gli import ad es di list ecc
 	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
 	private List<Review> reviews = new ArrayList<>();
+	
+	public List<Review> getReviews() {
+	    return reviews;
+	}
+
 
 }

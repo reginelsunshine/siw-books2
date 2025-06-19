@@ -30,5 +30,21 @@
 	</div>
 	<div th:unless="${book}">Non esiste</div>
 
+<h2>Recensioni</h2>
+
+<div th:if="${reviews.size() == 0}">
+    <p>Nessuna recensione disponibile.</p>
+</div>
+
+<ul th:each="review : ${reviews}">
+    <li>
+        <strong th:text="${review.user.name}">Utente</strong> - 
+        <span th:text="${review.title}">Titolo</span>:
+        <em th:text="${review.content}">Testo</em> 
+        (Voto: <span th:text="${review.rating}"></span>)
+    </li>
+</ul>
+
+
 </body>
 </html>
