@@ -15,8 +15,10 @@ import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Author {
+	/*NB PER ID: ho dovuto definire un autoincrement con setval all'interno di pgadmin per
+	  poter aggiungere nuovi autori*/
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //cambio da AUTO  a IDENTITY ...
 	private Long id;
 	private String name;
 

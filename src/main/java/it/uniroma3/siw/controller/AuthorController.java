@@ -1,5 +1,7 @@
 package it.uniroma3.siw.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -99,11 +101,27 @@ public class AuthorController {
 
 
 	// ====== ELIMINA AUTORE ======
+	// Metodo GET per mostrare la pagina di conferma eliminazione autore
 	@GetMapping("/admin/formDeleteAuthor")
-	public String deleteAuthor(@RequestParam("id") Long id) {
-		this.authorRepository.deleteById(id);
-		return "redirect:/admin/indexAuthor";
+	public String showDeleteAuthorsForm(Model model) {
+	    model.addAttribute("authors", authorRepository.findAll());
+	    return "/admin/formDeleteAuthor.html"; 
 	}
+
+
+	// Metodo POST che effettua la cancellazione
+	@PostMapping("/admin/deleteAuthors")
+	public String deleteSelectedAuthors(@RequestParam(value = "authorIds", required = false) List<Long> authorIds) {
+	    if (authorIds != null) {
+	        for (Long id : authorIds) {
+	            authorRepository.deleteById(id);
+	        }
+	    }
+	    return "redirect:/admin/indexAuthor";
+	}
+
+
+
 
 
 	// ====== AGGIUNTA LIBRI A UN AUTORE ======
