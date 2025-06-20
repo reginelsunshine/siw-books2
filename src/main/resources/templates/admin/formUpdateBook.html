@@ -1,19 +1,8 @@
-
-
-<!-- TODO TODO TODO -->
-<!-- DA    ***SUDDIVIDERE IN PIU' METODI NEL CONTROLLER ---+EFFICIENTE-->
-<!-- TODO -->
-
-
-
 <!DOCTYPE html>
-<html>
-
 <head>
     <title>Modifica Libro</title>
     <link rel="stylesheet" href="/css/stile.css" />
 </head>
-
 <body>
     <header>
         <div th:if="${userDetails}">
@@ -29,9 +18,21 @@
         <a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
     </div>
 
-    <h1>Aggiorna libro</h1>
+    <h1>Modifica Libro</h1>
 
-    <div th:if="${book}">
+    <!-- FASE 1: Lista libri -->
+    <div th:if="${books != null}">
+        <h2>Seleziona un libro da modificare</h2>
+        <ul>
+            <li th:each="book : ${books}">
+                <a th:href="@{'/admin/formUpdateBook'(id=${book.id})}"
+                   th:text="${book.title} + ' (' + ${book.yearOfPublication} + ')'"></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- FASE 2: Form modifica libro -->
+    <div th:if="${book != null}">
         <div>
             <span th:text="${book.title}">Titolo libro</span>
             <span th:text="'(' + ${book.yearOfPublication} + ')'">Anno</span>
@@ -42,9 +43,6 @@
             <div th:each="author : ${book.authors}">
                 <span th:text="${author.name} + ' ' + ${author.surname}">Nome Cognome</span>
             </div>
-            <a th:href="@{'/admin/book/update/' + ${book.id}}">
-                <button type="button">Modifica Autori</button>
-            </a>
         </div>
 
         <form th:action="@{/admin/book/update/{id}(id=${book.id})}" method="post" enctype="multipart/form-data">
@@ -56,21 +54,18 @@
 
             <label for="authorIds">Autori:</label>
             <select name="authorIds" multiple required>
-                <option th:each="author : ${authors}" th:value="${author.id}"
+                <option th:each="author : ${authors}"
+                        th:value="${author.id}"
                         th:text="${author.name + ' ' + author.surname}"
-                        th:selected="${book.authors.contains(author)}"></option>
+                        th:selected="${book.authors.contains(author)}">
+                </option>
             </select>
 
-            <label for="image">Cambia immagine:</label>
-            <input type="file" name="image" />
+            <label for="imageFile">Cambia immagine:</label>
+            <input type="file" name="imageFile" />
 
             <button type="submit">Salva modifiche</button>
         </form>
     </div>
-
-    <div th:unless="${book}">
-        Libro non esistente
-    </div>
 </body>
-
 </html>

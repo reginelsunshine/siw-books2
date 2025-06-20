@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Aggiungi Libro</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+
+<header>
+    <div th:if="${userDetails != null}">
+        <span th:text="${userDetails.username}"></span>
+        <a href="/logout">Logout</a>
+    </div>
+    <div th:if="${userDetails == null}">
+        <a href="/login">Login</a>
+    </div>
+</header>
+
+<h1>Inserisci un nuovo libro</h1>
+
+<form th:action="@{/admin/formAddBook}" th:object="${book}" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="title">Titolo:</label>
+        <input type="text" th:field="*{title}" required />
+    </div>
+
+    <div>
+        <label for="yearOfPublication">Anno di pubblicazione:</label>
+        <input type="number" th:field="*{yearOfPublication}" required />
+    </div>
+
+    <div>
+        <label for="imageFile">Copertina:</label>
+        <input type="file" id="imageFile" name="imageFile" accept="image/*" />
+    </div>
+
+    <div>
+        <label for="authorName">Nome autore:</label>
+        <input type="text" id="authorName" name="authorName" placeholder="Nome" />
+    </div>
+
+    <div>
+        <label for="authorSurname">Cognome autore:</label>
+        <input type="text" id="authorSurname" name="authorSurname" placeholder="Cognome" />
+    </div>
+
+    <div>
+        <button type="submit">Aggiungi libro</button>
+    </div>
+</form>
+
+<div>
+    <a href="/admin/indexBook">Torna alla gestione libri</a>
+</div>
+
+</body>
+</html>

@@ -29,5 +29,13 @@ public class AuthorService {
 		return authorRepository.findById(id).get();
 	}
 
+	public Author findByNameAndSurname(String authorName, String authorSurname) {
+	    return authorRepository.findByNameAndSurname(authorName, authorSurname).orElse(null);
+	}
+
+	public void save(Author author) {
+		authorRepository.save(author);
+	}
+	
 
 }

@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+    <meta charset="UTF-8" />
+    <title>Elimina Libro</title>
+    <link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
+
+<header>
+    <div th:if="${userDetails != null}">
+        <span th:text="${userDetails.username}"></span>
+        <a href="/logout">Logout</a>
+    </div>
+    <div th:if="${userDetails == null}">
+        <a href="/login">Login</a>
+    </div>
+</header>
+
+<h1>Elimina un libro</h1>
+
+<form th:action="@{/admin/deleteBook}" method="post">
+    <div>
+        <label for="bookId">Seleziona libro da eliminare:</label>
+        <select id="bookId" name="bookId" required>
+            <option value="" disabled selected>-- Scegli un libro --</option>
+            <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">Elimina</button>
+    </div>
+</form>
+
+<div>
+    <a href="/admin/indexBook">Torna alla gestione libri</a>
+</div>
 
 </body>
 </html>
