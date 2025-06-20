@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.*;
 
 
@@ -29,11 +25,16 @@ public class Book {
 	private Integer yearOfPublication;
 
 	//TODO gestione immagini (una o più immagini per libro)
-	
-	@Lob
+
+
+	@Basic(fetch = FetchType.LAZY)  
 	@Column(name = "image", columnDefinition = "bytea")
 	private byte[] image;
+	@Column(name = "image_type")
+	private String imageType;
 
+	    public String getImageType() { return imageType; }
+	    public void setImageType(String imageType) { this.imageType = imageType; }
 
 
 
@@ -102,14 +103,14 @@ public class Book {
 		return Objects.equals(authors, other.authors) && Objects.equals(id, other.id)
 				&& Objects.equals(title, other.title) && Objects.equals(yearOfPublication, other.yearOfPublication);
 	}
-	
+
 	//GESTIONE DELLE RECENSIONI DA PARTE DI UTENTI
 	//nb: a volte da errore poiché non riesce a suggerire gli import ad es di list ecc
 	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
 	private List<Review> reviews = new ArrayList<>();
-	
+
 	public List<Review> getReviews() {
-	    return reviews;
+		return reviews;
 	}
 
 

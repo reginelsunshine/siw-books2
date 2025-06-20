@@ -1,11 +1,15 @@
 package it.uniroma3.siw.controller;
 
+import org.springframework.http.MediaType;
+
 import java.io.IOException;
+import java.net.http.HttpHeaders;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,71 +75,71 @@ public class BookController {
 	 * - lista libri se non è passato id
 	 * - form modifica libro se è passato id come parametro request
 	 */
-	@GetMapping("/admin/formUpdateBook")
-	public String showUpdateBook(@RequestParam(value = "id", required = false) Long id, Model model) {
-		if (id == null) {
-			// Fase 1: mostra lista libri
-			model.addAttribute("books", bookService.findAll());
-		} else {
-			// Fase 2: mostra form modifica libro
-			Book book = bookService.findById(id);
-			if (book == null) {
-				return "error.html"; // o altra pagina di errore
-			}
-			model.addAttribute("book", book);
-			model.addAttribute("authors", authorService.findAll());
-		}
-		return "/admin/formUpdateBook.html";
-	}
+	// Mostra il form con lista libri e dati libro selezionato (se presente)
+    @GetMapping("/admin/formUpdateBook")
+    public String showUpdateBookForm(@RequestParam(required = false) Long selectedBookId, Model model) {
+        Iterable<Book> books = bookService.findAll();
+        model.addAttribute("books", books);
 
-	/**
-	 * POST per aggiornare libro
-	 */
-	@PostMapping("/admin/book/update/{id}")
-	public String updateBook(@PathVariable Long id,
-			@RequestParam String title,
-			@RequestParam Integer yearOfPublication,
-			@RequestParam(value = "authorIds", required = false) List<Long> authorIds,
-			@RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+        Book book = null;
+        if (selectedBookId != null) {
+            book = bookService.findById(selectedBookId);
+        }
+        model.addAttribute("book", book);
 
-		Book book = bookService.findById(id);
-		if (book == null) {
-			return "error.html";
-		}
+        return "/admin/formUpdateBook.html";
+    }
 
-		book.setTitle(title);
-		book.setYearOfPublication(yearOfPublication);
+    // Riceve il form aggiornamento libro
+    @PostMapping("/admin/formUpdateBook")
+    public String updateBook(@RequestParam("id") Long id,
+                             @RequestParam("title") String title,
+                             @RequestParam("yearOfPublication") Integer year,
+                             @RequestParam("imageFile") MultipartFile imageFile) {
+        Book book = bookService.findById(id);
+        book.setTitle(title);
+        book.setYearOfPublication(year);
 
-		if (authorIds != null) {
-			Set<Author> selectedAuthors = new HashSet<>();
-			for (Long authorId : authorIds) {
-				Author author = authorService.findById(authorId);
-				if (author != null) {
-					selectedAuthors.add(author);
-				}
-			}
-			book.setAuthors(selectedAuthors);
-		} else {
-			book.getAuthors().clear();
-		}
+        if (!imageFile.isEmpty()) {
+            try {
+                byte[] imageBytes = imageFile.getBytes();
+                book.setImage(imageBytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+                // gestisci errore
+            }
+        }
+        
+        bookService.save(book);
+        return "redirect:/book";
+    }
+    
+    @GetMapping("/book/image/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getBookImage(@PathVariable Long id) {
+        Book book = bookService.findById(id);
+        if (book == null || book.getImage() == null) {
+            return ResponseEntity.notFound().build();
+        }
 
-		if (imageFile != null && !imageFile.isEmpty()) {
-			book.setImage(imageFile.getBytes());
-		}
+        byte[] image = book.getImage();
+        String type = book.getImageType();
 
-		bookService.save(book);
-		return "redirect:/book/" + id;
-	}
+        MediaType mediaType;
+        try {
+            mediaType = MediaType.parseMediaType(type);
+        } catch (Exception e) {
+            mediaType = MediaType.APPLICATION_OCTET_STREAM; // fallback generico
+        }
+
+        return ResponseEntity
+                .ok()
+                .contentType(mediaType)
+                .body(image);
+    }
 
 
-
-
-	@GetMapping("/book/image/{id}")
-	@ResponseBody
-	public byte[] getBookImage(@PathVariable("id") Long id) {
-		return this.bookService.findById(id).getImage();
-	}
-
+    
 	@GetMapping("/admin/indexBook")
 	public String getAdminIndexBook(Model model) {
 		return "/admin/indexBook.html";
