@@ -1,30 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Autori</title>
-<link rel="stylesheet" href="/css/stile.css" />
+    <title>Autori</title>
+    <link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
+
 <header>
-		<!-- Mostra solo se utente è autenticato -->
-		<div th:if="${userDetails != null}">
-			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-		</div>
-		<!-- Mostra solo se utente NON è autenticato -->
-		<div th:if="${userDetails == null}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
-	
-	<div><a href="/"><img src="/images/logo-siw.png" width="20%"/></a></div>
-	<h1>Autori</h1>
-	
-	<div th:if="${authors==null || authors.isEmpty()}">Non ci sono autori nel sistema</div>
-	<ul>
-		<li th:each="author : ${authors}">
-			<a th:href="@{'/author' + '/' + ${author.id}}"
-				th:text="${author.name} + ' ' + ${author.surname}">George Orwell</a>
-		</li>
-	</ul>
+	<!-- Mostra solo se utente è autenticato -->
+	<div th:if="${userDetails != null}">
+		<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+	</div>
+	<!-- Mostra solo se utente NON è autenticato -->
+	<div th:if="${userDetails == null}">
+		<a href="/login">Login</a>
+	</div>
+</header>
+
+<div>
+    <a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
+</div>
+
+<h1>Autori</h1>
+
+<div th:if="${authors==null || authors.isEmpty()}">Non ci sono autori nel sistema</div>
+
+<ul>
+    <li th:each="author : ${authors}">
+        <!-- 👇 Se esiste immagine, la mostra accanto al nome -->
+        <div style="display: flex; align-items: center; margin-bottom: 1em;">
+            <div th:if="${author.image != null}">
+                <img th:src="@{'/author/image/' + ${author.id}}" alt="Foto" width="60" height="60" style="margin-right: 10px; border-radius: 8px;" />
+            </div>
+            <div>
+                <a th:href="@{'/author/' + ${author.id}}"
+                   th:text="${author.name} + ' ' + ${author.surname}">Nome Cognome</a>
+            </div>
+        </div>
+    </li>
+</ul>
+
 </body>
 </html>

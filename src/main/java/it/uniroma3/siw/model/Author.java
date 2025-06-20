@@ -7,7 +7,10 @@ import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +26,31 @@ public class Author {
 	private String name;
 
 	private String surname;
+	
+	 @Basic(fetch = FetchType.LAZY)
+	    @Column(name = "image", columnDefinition = "bytea")
+	    private byte[] image;
+
+	    @Column(name = "image_type")
+	    private String imageType;
+
+	    // getter e setter
+
+	    public byte[] getImage() {
+	        return image;
+	    }
+
+	    public void setImage(byte[] image) {
+	        this.image = image;
+	    }
+
+	    public String getImageType() {
+	        return imageType;
+	    }
+
+	    public void setImageType(String imageType) {
+	        this.imageType = imageType;
+	    }
 	
 	@ManyToMany(mappedBy = "authors")
 	private Set<Book> books = new HashSet<>();

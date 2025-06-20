@@ -1,5 +1,7 @@
 package it.uniroma3.siw.controller;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
@@ -19,6 +22,11 @@ import it.uniroma3.siw.repository.BookRepository;
 import it.uniroma3.siw.service.AuthorService;
 import it.uniroma3.siw.service.BookService;
 import jakarta.validation.Valid;
+
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class AuthorController {
@@ -90,14 +98,67 @@ public class AuthorController {
 	}
 
 	@PostMapping("/admin/formUpdateAuthor")
-	public String updateAuthor(@ModelAttribute("author") @Valid Author updatedAuthor, BindingResult bindingResult, Model model) {
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("authors", this.authorRepository.findAll());
-			return "/admin/formUpdateAuthor.html";
-		}
-		this.authorRepository.save(updatedAuthor);
-		return "redirect:/admin/indexAuthor";
+	public String updateAuthor(@RequestParam("id") Long id,
+	                           @RequestParam("name") String name,
+	                           @RequestParam("surname") String surname,
+	                           @RequestParam("dateOfBirth") String dateOfBirth,
+	                           @RequestParam(value = "dateOfDeath", required = false) String dateOfDeath,
+	                           @RequestParam(value = "nationality", required = false) String nationality,
+	                           @RequestParam("imageFile") MultipartFile imageFile) {
+	    
+	    Author author = authorService.findById(id);
+	    if (author == null) {
+	        return "redirect:/admin/formUpdateAuthor"; // oppure pagina di errore
+	    }
+
+	    author.setName(name);
+	    author.setSurname(surname);
+	    author.setDateOfBirth(LocalDate.parse(dateOfBirth));
+	    
+	    if (dateOfDeath != null && !dateOfDeath.isEmpty()) {
+	        author.setDateOfDeath(LocalDate.parse(dateOfDeath));
+	    } else {
+	        author.setDateOfDeath(null);
+	    }
+
+	    author.setNationality(nationality);
+
+	    if (!imageFile.isEmpty()) {
+	        try {
+	            byte[] imageBytes = imageFile.getBytes();
+	            author.setImage(imageBytes);
+	            author.setImageType(imageFile.getContentType());
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    authorRepository.save(author);
+	    return "redirect:/admin/indexAuthor";
 	}
+	
+	@GetMapping("/author/image/{id}")
+	@ResponseBody
+	public ResponseEntity<byte[]> getAuthorImage(@PathVariable Long id) {
+	    Author author = authorService.findById(id);
+	    if (author == null || author.getImage() == null) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    MediaType mediaType;
+	    try {
+	        mediaType = MediaType.parseMediaType(author.getImageType());
+	    } catch (Exception e) {
+	        mediaType = MediaType.APPLICATION_OCTET_STREAM;
+	    }
+
+	    return ResponseEntity
+	            .ok()
+	            .contentType(mediaType)
+	            .body(author.getImage());
+	}
+
+
 
 
 	// ====== ELIMINA AUTORE ======
