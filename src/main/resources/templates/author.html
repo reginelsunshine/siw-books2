@@ -6,14 +6,16 @@
 </head>
 <body>
 
-    <header>
-        <div th:if="${userDetails!=null}">
-            <span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-        </div>
-        <div th:unless="${user}">
-            <a href="/login">Login</a>
-        </div>
-    </header>
+<header>
+		<!-- Mostra solo se utente è autenticato -->
+		<div th:if="${userDetails != null}">
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+		</div>
+		<!-- Mostra solo se utente NON è autenticato -->
+		<div th:if="${userDetails == null}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
 
     <div>
         <a href="/"><img src="/images/logo-siw.png" width="20%" /></a>

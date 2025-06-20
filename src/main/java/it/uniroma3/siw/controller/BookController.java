@@ -3,8 +3,6 @@ package it.uniroma3.siw.controller;
 import org.springframework.http.MediaType;
 
 import java.io.IOException;
-import java.net.http.HttpHeaders;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Aggiungi Recensione</title>
-    <link rel="stylesheet" href="/css/stile.css" />
+<title>Aggiungi Recensione</title>
+<link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
-    <h1>Aggiungi una recensione</h1>
-    
-    <form th:action="@{'/book/' + ${review.book.id} + '/review'}" th:object="${review}" method="post">
-        <div>
-            <label for="title">Titolo:</label>
-            <input type="text" th:field="*{title}" />
-        </div>
+	<header>
+		<!-- Mostra solo se utente è autenticato -->
+		<div th:if="${userDetails != null}">
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+		</div>
+		<!-- Mostra solo se utente NON è autenticato -->
+		<div th:if="${userDetails == null}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
 
-        <div>
-            <label for="content">Testo:</label>
-            <textarea th:field="*{content}"></textarea>
-        </div>
+	<div>
+		<a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
+	</div>
 
-        <div>
-            <label for="rating">Voto (1-5):</label>
-            <input type="number" th:field="*{rating}" min="1" max="5" />
-        </div>
+	<h1>Aggiungi una recensione</h1>
 
-        <button type="submit">Invia recensione</button>
-    </form>
+	<form th:action="@{'/book/' + ${review.book.id} + '/review'}"
+		th:object="${review}" method="post">
+		<div>
+			<label for="title">Titolo:</label> <input type="text"
+				th:field="*{title}" />
+		</div>
+
+		<div>
+			<label for="content">Testo:</label>
+			<textarea th:field="*{content}"></textarea>
+		</div>
+
+		<div>
+			<label for="rating">Voto (1-5):</label> <input type="number"
+				th:field="*{rating}" min="1" max="5" />
+		</div>
+
+		<button type="submit">Invia recensione</button>
+	</form>
 </body>
 </html>

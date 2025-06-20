@@ -1,55 +1,67 @@
 <!DOCTYPE html>
 <head>
-    <meta charset="UTF-8">
-    <title>Elimina recensioni da libro</title>
-    <link rel="stylesheet" href="/css/stile.css" />
+<meta charset="UTF-8">
+<title>Elimina recensioni da libro</title>
+<link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
+	<header>
+		<!-- Mostra solo se utente è autenticato -->
+		<div th:if="${userDetails != null}">
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+		</div>
+		<!-- Mostra solo se utente NON è autenticato -->
+		<div th:if="${userDetails == null}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+	<div>
+		<img src="/images/logo-siw.png" width="20%" />
+	</div>
+	<h1>Seleziona un libro per eliminare recensioni</h1>
 
-<h1>Seleziona un libro per eliminare recensioni</h1>
+	<form method="get" th:action="@{/admin/formDeleteReviewFromBook}">
+		<label for="bookSelect">Libro:</label> <select id="bookSelect"
+			name="bookId" onchange="this.form.submit()">
+			<option value="" th:text="'-- Seleziona un libro --'"></option>
+			<option th:each="book : ${books}" th:value="${book.id}"
+				th:text="${book.title}" th:selected="${book.id == selectedBook?.id}">
+			</option>
+		</select>
+	</form>
 
-<form method="get" th:action="@{/admin/formDeleteReviewFromBook}">
-    <label for="bookSelect">Libro:</label>
-    <select id="bookSelect" name="bookId" onchange="this.form.submit()">
-        <option value="" th:text="'-- Seleziona un libro --'"></option>
-        <option th:each="book : ${books}" 
-                th:value="${book.id}" 
-                th:text="${book.title}" 
-                th:selected="${book.id == selectedBook?.id}">
-        </option>
-    </select>
-</form>
+	<div th:if="${selectedBook != null}">
+		<h2>
+			Recensioni per il libro: <span th:text="${selectedBook.title}"></span>
+		</h2>
 
-<div th:if="${selectedBook != null}">
-    <h2>Recensioni per il libro: <span th:text="${selectedBook.title}"></span></h2>
-    
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Id Recensione</th>
-                <th>Testo</th>
-                <th>Azioni</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="review : ${reviews}">
-                <td th:text="${review.id}"></td>
-                <td th:text="${review.text}"></td>
-                <td>
-                    <form method="post" th:action="@{/admin/deleteReview}">
-                        <input type="hidden" name="reviewId" th:value="${review.id}" />
-                        <input type="hidden" name="bookId" th:value="${selectedBook.id}" />
-                        <button type="submit">Elimina</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <div th:if="${#lists.isEmpty(reviews)}">
-        <p>Non ci sono recensioni da eliminare per questo libro.</p>
-    </div>
-</div>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>Id Recensione</th>
+					<th>Testo</th>
+					<th>Azioni</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="review : ${reviews}">
+					<td th:text="${review.id}"></td>
+					<td th:text="${review.text}"></td>
+					<td>
+						<form method="post" th:action="@{/admin/deleteReview}">
+							<input type="hidden" name="reviewId" th:value="${review.id}" />
+							<input type="hidden" name="bookId" th:value="${selectedBook.id}" />
+							<button type="submit">Elimina</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div th:if="${#lists.isEmpty(reviews)}">
+			<p>Non ci sono recensioni da eliminare per questo libro.</p>
+		</div>
+	</div>
 
 </body>
 </html>

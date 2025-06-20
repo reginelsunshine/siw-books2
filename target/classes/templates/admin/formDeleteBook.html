@@ -7,15 +7,18 @@
 <body>
 
 <header>
-    <div th:if="${userDetails != null}">
-        <span th:text="${userDetails.username}"></span>
-        <a href="/logout">Logout</a>
-    </div>
-    <div th:if="${userDetails == null}">
-        <a href="/login">Login</a>
-    </div>
-</header>
-
+		<!-- Mostra solo se utente è autenticato -->
+		<div th:if="${userDetails != null}">
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+		</div>
+		<!-- Mostra solo se utente NON è autenticato -->
+		<div th:if="${userDetails == null}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+<div>
+		<img src="/images/logo-siw.png" width="20%" />
+	</div>
 <h1>Elimina un libro</h1>
 
 <form th:action="@{/admin/deleteBook}" method="post">

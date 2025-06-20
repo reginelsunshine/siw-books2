@@ -7,15 +7,15 @@
 <body>
 
 <header>
-    <div th:if="${userDetails != null}">
-        <span th:text="${userDetails.username}"></span>
-        <a href="/logout">Logout</a>
-    </div>
-    <div th:if="${userDetails == null}">
-        <a href="/login">Login</a>
-    </div>
-</header>
-
+		<!-- Mostra solo se utente è autenticato -->
+		<div th:if="${userDetails != null}">
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+		</div>
+		<!-- Mostra solo se utente NON è autenticato -->
+		<div th:if="${userDetails == null}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
 <h1>Inserisci un nuovo libro</h1>
 
 <form th:action="@{/admin/formAddBook}" th:object="${book}" method="post" enctype="multipart/form-data">
