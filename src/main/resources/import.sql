@@ -27,5 +27,5 @@ INSERT INTO author (id, name, surname, date_of_birth, nationality) VALUES (nextv
 INSERT INTO author (id, name, surname, date_of_birth, nationality) VALUES (nextval('hibernate_sequence'), 'Aldous', 'Huxley', '1894-07-26', 'British');
 
 INSERT INTO book (id, title, year_of_publication) VALUES (nextval('hibernate_sequence'), '1984', 1949);
-INSERT INTO book (id, title, year_of_publication) VALUES (nextval('hibernate_sequence'), 'To Kill a Mockingbird', 1960);
-INSERT INTO book (id, title, year_of_publication) VALUES (nextval('hibernate_sequence'), 'Brave New World', 1932);
+INSERT INTO book (id, title, year_of_publication) VALUES (nextval('hibernate_sequence'), 'Il buio oltre la siepe', 1960);
+INSERT INTO book (id, title, year_of_publication) VALUES (nextval('hibernate_sequence'), 'Il mondo nuovo', 1932);
