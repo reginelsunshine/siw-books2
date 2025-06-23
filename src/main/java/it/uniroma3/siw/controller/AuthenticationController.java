@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import it.uniroma3.siw.model.Book;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.repository.BookRepository;
 import it.uniroma3.siw.service.BookService;
 import it.uniroma3.siw.service.AuthorService;
 import it.uniroma3.siw.service.CredentialsService;
@@ -24,6 +26,7 @@ import jakarta.validation.Valid;
 public class AuthenticationController {
 	@Autowired
 	private CredentialsService credentialsService;
+	@Autowired private BookRepository bookRepository;
 
     @Autowired
 	private UserService userService;
@@ -44,6 +47,7 @@ public class AuthenticationController {
 	public String index(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication instanceof AnonymousAuthenticationToken) {
+			
 	        return "index.html";
 		}
 		else {		

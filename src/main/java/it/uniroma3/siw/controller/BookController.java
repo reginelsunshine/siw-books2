@@ -3,6 +3,7 @@ package it.uniroma3.siw.controller;
 import org.springframework.http.MediaType;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -62,6 +63,8 @@ public class BookController {
 		List<Review> reviews = bookService.getReviewsForBook(id);
 		model.addAttribute("book", book);
 		model.addAttribute("reviews", reviews);
+		Set<Author> authorsBook = bookService.getAuthorsOfBook(id);
+		model.addAttribute("authorsBook", authorsBook);
 
 		return "book.html";
 	}
@@ -144,13 +147,20 @@ public class BookController {
 	}
 
 
-	@GetMapping("/admin/formAddBook")
+	/*@GetMapping("/admin/formAddBook")
 	public String showAddBookForm(Model model) {
 		model.addAttribute("book", new Book());
 		return "/admin/formAddBook";
+	}*/
+	@GetMapping("/admin/formAddBook")
+	public String showAddBookForm(Model model) {
+		model.addAttribute("book", new Book());
+		model.addAttribute("authors", authorService.findAll()); // Passa tutti gli autori
+		return "/admin/formAddBook";
 	}
 
-	@PostMapping("/admin/formAddBook")
+
+	/*@PostMapping("/admin/formAddBook")
 	public String addBook(@ModelAttribute("book") Book book,
 			@RequestParam("imageFile") MultipartFile imageFile,
 			@RequestParam("authorName") String authorName,
@@ -175,7 +185,30 @@ public class BookController {
 
 		bookService.save(book);
 		return "redirect:/book";
+	}*/
+	@PostMapping("/admin/formAddBook")
+	public String addBook(@ModelAttribute("book") Book book,
+	                      @RequestParam("imageFile") MultipartFile imageFile,
+	                      @RequestParam("authorIds") List<Long> authorIds) throws IOException {
+
+		if (!imageFile.isEmpty()) {
+			book.setImage(imageFile.getBytes());
+		}
+
+		// Trova autori selezionati
+		Set<Author> selectedAuthors = new HashSet<>();
+		for (Long id : authorIds) {
+			Author author = authorService.findById(id);
+			if (author != null) {
+				selectedAuthors.add(author);
+			}
+		}
+		book.setAuthors(selectedAuthors);
+
+		bookService.save(book);
+		return "redirect:/book";
 	}
+
 
 	// Mostra il form per eliminare libro
 	@GetMapping("/admin/formDeleteBook")

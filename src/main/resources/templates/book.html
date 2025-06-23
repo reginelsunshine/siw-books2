@@ -25,7 +25,7 @@
 			th:text="'(' + ${book.yearOfPublication} + ')'">2000</span> <span>
 			<img th:src="@{/book/image/{id}(id=${book.id})}" alt="Immagine libro"
 			width="200" />
-
+			
 		</span>
 	</div>
 	<div th:unless="${book}">Non esiste</div>
@@ -45,6 +45,13 @@
     </li>
 </ul>
 
+<h2>Autori</h2>
+<div th:if="${authorsBook.size() == 0}">
+    <p>Nessun autore per questo libro.</p>
+</div>
+<ul th:each="author : ${authorsBook}">
+   <li th:text="${author.name + ' ' + author.surname}"></li>
+</ul>
 
 </body>
 </html>

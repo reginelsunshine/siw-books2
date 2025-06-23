@@ -2,12 +2,14 @@ package it.uniroma3.siw.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.model.Author;
+import it.uniroma3.siw.model.Book;
 import it.uniroma3.siw.repository.AuthorRepository;
 @Service
 public class AuthorService {
@@ -28,6 +30,10 @@ public class AuthorService {
 		//NON DIMENTICARE DI CHIAMRE ANCHE .GET() PER OTTENERE L'AUTORE EFFETTIVAMENTE
 		return authorRepository.findById(id).get();
 	}
+	
+
+
+
 
 	public Author findByNameAndSurname(String authorName, String authorSurname) {
 	    return authorRepository.findByNameAndSurname(authorName, authorSurname).orElse(null);
@@ -37,5 +43,4 @@ public class AuthorService {
 		authorRepository.save(author);
 	}
 	
-
 }

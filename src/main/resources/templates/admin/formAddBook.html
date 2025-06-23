@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Aggiungi Libro</title>
     <link rel="stylesheet" href="/css/stile.css" />
@@ -7,15 +6,14 @@
 <body>
 
 <header>
-		<!-- Mostra solo se utente è autenticato -->
-		<div th:if="${userDetails != null}">
-			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-		</div>
-		<!-- Mostra solo se utente NON è autenticato -->
-		<div th:if="${userDetails == null}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
+    <div th:if="${userDetails != null}">
+        <span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+    </div>
+    <div th:if="${userDetails == null}">
+        <a href="/login">Login</a>
+    </div>
+</header>
+
 <h1>Inserisci un nuovo libro</h1>
 
 <form th:action="@{/admin/formAddBook}" th:object="${book}" method="post" enctype="multipart/form-data">
@@ -35,13 +33,14 @@
     </div>
 
     <div>
-        <label for="authorName">Nome autore:</label>
-        <input type="text" id="authorName" name="authorName" placeholder="Nome" />
-    </div>
-
-    <div>
-        <label for="authorSurname">Cognome autore:</label>
-        <input type="text" id="authorSurname" name="authorSurname" placeholder="Cognome" />
+        <label for="authors">Autori:</label><br>
+        <input type="text" id="searchAuthor" placeholder="Cerca autore..." onkeyup="filterAuthors()"/><br>
+        <select id="authors" name="authorIds" multiple size="6" required>
+            <option th:each="author : ${authors}"
+                    th:value="${author.id}"
+                    th:text="${author.name + ' ' + author.surname}">
+            </option>
+        </select>
     </div>
 
     <div>
@@ -52,6 +51,17 @@
 <div>
     <a href="/admin/indexBook">Torna alla gestione libri</a>
 </div>
+
+<script>
+function filterAuthors() {
+    let input = document.getElementById("searchAuthor").value.toLowerCase();
+    let options = document.getElementById("authors").options;
+    for (let i = 0; i < options.length; i++) {
+        let text = options[i].text.toLowerCase();
+        options[i].style.display = text.includes(input) ? "" : "none";
+    }
+}
+</script>
 
 </body>
 </html>

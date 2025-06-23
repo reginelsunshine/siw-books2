@@ -203,7 +203,7 @@ public class AuthorController {
 	}
 
 	
-	@PostMapping("/admin/formAddAuthorToBook")
+	/*@PostMapping("/admin/formAddAuthorToBook")
 	public String assignBookToAuthor(@RequestParam("id") Long authorId,
 	                                 @RequestParam("bookId") Long bookId) {
 	    Author author = authorService.findById(authorId);
@@ -215,7 +215,25 @@ public class AuthorController {
 	    }
 
 	    return "redirect:/admin/indexAuthor";
+	}*/
+	@PostMapping("/admin/formAddAuthorToBook")
+	public String assignBookToAuthor(@RequestParam("id") Long authorId,
+	                                 @RequestParam("bookId") Long bookId) {
+	    Author author = authorService.findById(authorId);
+	    Book book = bookService.findById(bookId);
+
+	    if (author != null && book != null) {
+	        author.getBooks().add(book);
+	        book.getAuthors().add(author); // <- AGGIUNTA NECESSARIA PER RELAZIONE BIDIREZIONALE
+
+	        // Salva entrambi per assicurarti che l'oggetto persistente venga aggiornato
+	        authorRepository.save(author);
+	        bookRepository.save(book);
+	    }
+
+	    return "redirect:/admin/indexAuthor";
 	}
+
 
 
 
