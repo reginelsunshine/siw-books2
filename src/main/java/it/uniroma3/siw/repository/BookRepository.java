@@ -9,4 +9,8 @@ import it.uniroma3.siw.model.Author;
 
 public interface BookRepository extends CrudRepository<Book, Long> {
 
+	boolean existsByTitleIgnoreCaseAndYearOfPublication(String title, Integer yearOfPublication);
+
+	boolean existsByTitleIgnoreCaseAndYearOfPublicationAndIdNot(String title, Integer yearOfPublication, Long id);
+
 }

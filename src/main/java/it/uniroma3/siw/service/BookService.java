@@ -18,16 +18,16 @@ import it.uniroma3.siw.repository.ReviewRepository;
 public class BookService {
 	@Autowired
 	private BookRepository bookRepository;
-	
+
 	@Autowired
 	private AuthorRepository authorRepository;
-	
+
 	@Autowired 
 	private ReviewRepository reviewRepository;
-	
+
 	@Autowired
 	private AuthorService authorService;
-	
+
 
 	private BookService bookService;
 
@@ -47,19 +47,29 @@ public class BookService {
 		Book book = this.findById(bookId); // oppure bookRepository.findById(id).get()
 		return book.getReviews(); // ritorna le recensioni associate
 	}
-	
+
 	public Set<Author> getAuthorsOfBook(Long id){
 		Book authorBook = this.findById(id);
 		return authorBook.getAuthors();
 	}
-	
+
 
 	public void deleteById(Long id) {
 		bookRepository.deleteById(id);
 	}
-	
- 
-    public void deleteReviewById(Long reviewId) {
-        reviewRepository.deleteById(reviewId);
-    }
+
+
+	public void deleteReviewById(Long reviewId) {
+		reviewRepository.deleteById(reviewId);
+	}
+
+
+	public boolean alreadyExists(Book book) {
+		if (book.getId() == null)
+			return bookRepository.existsByTitleIgnoreCaseAndYearOfPublication(
+					book.getTitle(), book.getYearOfPublication());
+		else
+			return bookRepository.existsByTitleIgnoreCaseAndYearOfPublicationAndIdNot(
+					book.getTitle(), book.getYearOfPublication(), book.getId());
+	}
 }

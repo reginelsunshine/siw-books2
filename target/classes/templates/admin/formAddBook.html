@@ -20,11 +20,13 @@
     <div>
         <label for="title">Titolo:</label>
         <input type="text" th:field="*{title}" required />
+        <span th:if = "${#fields.hasErrors('title')}" th:errors="*{title}"></span>
     </div>
 
     <div>
         <label for="yearOfPublication">Anno di pubblicazione:</label>
         <input type="number" th:field="*{yearOfPublication}" required />
+        <span th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}"></span>
     </div>
 
     <div>

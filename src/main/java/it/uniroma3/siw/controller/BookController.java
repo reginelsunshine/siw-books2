@@ -5,7 +5,9 @@ import org.springframework.http.MediaType;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Book;
 import it.uniroma3.siw.model.Review;
+import it.uniroma3.siw.controller.validator.BookValidator;
 import it.uniroma3.siw.model.Author;
 import it.uniroma3.siw.service.BookService;
+import jakarta.validation.Valid;
 import it.uniroma3.siw.service.AuthorService;
+
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 @Controller
 public class BookController {
@@ -33,6 +40,9 @@ public class BookController {
 
 	@Autowired
 	private AuthorService authorService;
+
+	@Autowired
+	private BookValidator bookValidator;
 
 	//quando arriva una richiesta http get alla rotta /book esegui questo metodo e restituisci la lista di libri
 	@GetMapping("/book")
@@ -77,70 +87,70 @@ public class BookController {
 	 * - form modifica libro se è passato id come parametro request
 	 */
 	// Mostra il form con lista libri e dati libro selezionato (se presente)
-    @GetMapping("/admin/formUpdateBook")
-    public String showUpdateBookForm(@RequestParam(required = false) Long selectedBookId, Model model) {
-        Iterable<Book> books = bookService.findAll();
-        model.addAttribute("books", books);
+	@GetMapping("/admin/formUpdateBook")
+	public String showUpdateBookForm(@RequestParam(required = false) Long selectedBookId, Model model) {
+		Iterable<Book> books = bookService.findAll();
+		model.addAttribute("books", books);
 
-        Book book = null;
-        if (selectedBookId != null) {
-            book = bookService.findById(selectedBookId);
-        }
-        model.addAttribute("book", book);
+		Book book = null;
+		if (selectedBookId != null) {
+			book = bookService.findById(selectedBookId);
+		}
+		model.addAttribute("book", book);
 
-        return "/admin/formUpdateBook.html";
-    }
+		return "/admin/formUpdateBook.html";
+	}
 
-    // Riceve il form aggiornamento libro
-    @PostMapping("/admin/formUpdateBook")
-    public String updateBook(@RequestParam("id") Long id,
-                             @RequestParam("title") String title,
-                             @RequestParam("yearOfPublication") Integer year,
-                             @RequestParam("imageFile") MultipartFile imageFile) {
-        Book book = bookService.findById(id);
-        book.setTitle(title);
-        book.setYearOfPublication(year);
+	// Riceve il form aggiornamento libro
+	@PostMapping("/admin/formUpdateBook")
+	public String updateBook(
+			@Valid @ModelAttribute("book") Book book,
+			BindingResult bindingResult,
+			@RequestParam("imageFile") MultipartFile imageFile,
+			Model model) throws IOException {
 
-        if (!imageFile.isEmpty()) {
-            try {
-                byte[] imageBytes = imageFile.getBytes();
-                book.setImage(imageBytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-                // gestisci errore
-            }
-        }
-        
-        bookService.save(book);
-        return "redirect:/book";
-    }
-    
-    @GetMapping("/book/image/{id}")
-    @ResponseBody
-    public ResponseEntity<byte[]> getBookImage(@PathVariable Long id) {
-        Book book = bookService.findById(id);
-        if (book == null || book.getImage() == null) {
-            return ResponseEntity.notFound().build();
-        }
+		bookValidator.validate(book, bindingResult);
 
-        byte[] image = book.getImage();
-        String type = book.getImageType();
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("books", bookService.findAll());
+			return "/admin/formUpdateBook.html";
+		}
 
-        MediaType mediaType;
-        try {
-            mediaType = MediaType.parseMediaType(type);
-        } catch (Exception e) {
-            mediaType = MediaType.APPLICATION_OCTET_STREAM; // fallback generico
-        }
+		if (!imageFile.isEmpty()) {
+			book.setImage(imageFile.getBytes());
+		}
 
-        return ResponseEntity
-                .ok()
-                .contentType(mediaType)
-                .body(image);
-    }
+		bookService.save(book);
+		return "redirect:/book";
+	}
 
 
-    
+	@GetMapping("/book/image/{id}")
+	@ResponseBody
+	public ResponseEntity<byte[]> getBookImage(@PathVariable Long id) {
+		Book book = bookService.findById(id);
+		if (book == null || book.getImage() == null) {
+			return ResponseEntity.notFound().build();
+		}
+
+		byte[] image = book.getImage();
+		String type = book.getImageType();
+
+		MediaType mediaType;
+		try {
+			mediaType = MediaType.parseMediaType(type);
+		} catch (Exception e) {
+			mediaType = MediaType.APPLICATION_OCTET_STREAM; // fallback generico
+		}
+
+		return ResponseEntity
+				.ok()
+				.contentType(mediaType)
+				.body(image);
+	}
+
+
+
 	@GetMapping("/admin/indexBook")
 	public String getAdminIndexBook(Model model) {
 		return "/admin/indexBook.html";
@@ -186,28 +196,53 @@ public class BookController {
 		bookService.save(book);
 		return "redirect:/book";
 	}*/
-	@PostMapping("/admin/formAddBook")
-	public String addBook(@ModelAttribute("book") Book book,
-	                      @RequestParam("imageFile") MultipartFile imageFile,
-	                      @RequestParam("authorIds") List<Long> authorIds) throws IOException {
 
+	@PostMapping("/admin/formAddBook")
+	public String addBook(
+			@Valid @ModelAttribute("book") Book book,
+			BindingResult bindingResult,                 // subito dopo @Valid!
+			@RequestParam("imageFile") MultipartFile imageFile,
+			@RequestParam("authorIds")  List<Long> authorIds,
+			Model model) throws IOException {
+
+		/* Richiamiamo il validatore custom */
+		bookValidator.validate(book, bindingResult);
+		
+		if (bookService.alreadyExists(book)) {
+		    bindingResult.rejectValue("title", "book.title.duplicate");
+		}
+
+		/* Se ci sono errori, torniamo al form con gli stessi dati */
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("authors", authorService.findAll());
+			return "/admin/formAddBook";
+		}
+
+		/* -------- gestione immagine e autori -------- */
 		if (!imageFile.isEmpty()) {
 			book.setImage(imageFile.getBytes());
 		}
 
-		// Trova autori selezionati
-		Set<Author> selectedAuthors = new HashSet<>();
-		for (Long id : authorIds) {
-			Author author = authorService.findById(id);
-			if (author != null) {
-				selectedAuthors.add(author);
-			}
-		}
+		/* oppure: Set<Author> selectedAuthors = new HashSet<>();
+for (Long authorId : authorIds) {
+    Author author = authorService.findById(authorId);
+    if (author != null) {
+        selectedAuthors.add(author);
+    }
+}
+book.setAuthors(selectedAuthors);
+		 */
+
+		Set<Author> selectedAuthors = authorIds.stream()
+				.map(authorService::findById)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toSet());
 		book.setAuthors(selectedAuthors);
 
 		bookService.save(book);
 		return "redirect:/book";
 	}
+
 
 
 	// Mostra il form per eliminare libro
@@ -223,28 +258,28 @@ public class BookController {
 		bookService.deleteById(bookId);
 		return "redirect:/admin/indexBook";
 	}
-	
+
 	@GetMapping("/admin/formDeleteReviewFromBook")
 	public String showDeleteReviewForm(@RequestParam(value = "bookId", required = false) Long bookId, Model model) {
-	    model.addAttribute("books", bookService.findAll());
+		model.addAttribute("books", bookService.findAll());
 
-	    if (bookId != null) {
-	        Book book = bookService.findById(bookId);
-	        if (book != null) {
-	            List<Review> reviews = bookService.getReviewsForBook(bookId);
-	            model.addAttribute("selectedBook", book);
-	            model.addAttribute("reviews", reviews);
-	        }
-	    }
+		if (bookId != null) {
+			Book book = bookService.findById(bookId);
+			if (book != null) {
+				List<Review> reviews = bookService.getReviewsForBook(bookId);
+				model.addAttribute("selectedBook", book);
+				model.addAttribute("reviews", reviews);
+			}
+		}
 
-	    return "/admin/formDeleteReviewFromBook.html";
+		return "/admin/formDeleteReviewFromBook.html";
 	}
-	
+
 	@PostMapping("/admin/deleteReview")
 	public String deleteReview(@RequestParam("reviewId") Long reviewId,
-	                           @RequestParam("bookId") Long bookId) {
-	    bookService.deleteReviewById(reviewId);
-	    return "redirect:/admin/formDeleteReviewFromBook?bookId=" + bookId;
+			@RequestParam("bookId") Long bookId) {
+		bookService.deleteReviewById(reviewId);
+		return "redirect:/admin/formDeleteReviewFromBook?bookId=" + bookId;
 	}
 
 }

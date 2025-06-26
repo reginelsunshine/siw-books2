@@ -37,21 +37,24 @@
 	</form>
 
 	<!-- FORM per aggiornare dati libro, solo se libro selezionato -->
-	<div th:if="${book != null}">
-		<form th:action="@{/admin/formUpdateBook}" method="post"
-			enctype="multipart/form-data">
-			<input type="hidden" name="id" th:value="${book.id}" /> <label
-				for="title">Titolo:</label> <input type="text" name="title"
-				th:value="${book.title}" required /><br /> <label
-				for="yearOfPublication">Anno di pubblicazione:</label> <input
-				type="number" name="yearOfPublication"
-				th:value="${book.yearOfPublication}" required /><br /> <img
-				th:src="@{'/book/image/' + ${book.id}}" alt="Immagine libro"
-				width="200" /> <label for="imageFile">Cambia immagine:</label> <input
-				type="file" name="imageFile" /><br />
+<form th:action="@{/admin/formUpdateBook}" th:object="${book}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}" />
+    
+    <label for="title">Titolo:</label>
+    <input type="text" th:field="*{title}" required />
+    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br />
 
-			<button type="submit">Salva</button>
-		</form>
+    <label for="yearOfPublication">Anno di pubblicazione:</label>
+    <input type="number" th:field="*{yearOfPublication}" required />
+    <span th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}"></span><br />
+
+    <img th:src="@{'/book/image/' + ${book.id}}" alt="Immagine libro" width="200" />
+    <label for="imageFile">Cambia immagine:</label>
+    <input type="file" name="imageFile" /><br />
+
+    <button type="submit">Salva</button>
+</form>
+
 	</div>
 </body>
 </html>
