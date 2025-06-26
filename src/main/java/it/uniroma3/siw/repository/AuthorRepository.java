@@ -1,5 +1,6 @@
 package it.uniroma3.siw.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,5 +14,11 @@ public interface AuthorRepository  extends CrudRepository<Author, Long>{
 	Optional<Author> findById(Long id);
 	
 	List<Author> findAllByOrderBySurnameAscNameAsc();
+
+	boolean existsByNameIgnoreCaseAndSurnameIgnoreCaseAndDateOfBirth(String name, String surname,
+			LocalDate dateOfBirth);
+
+	boolean existsByNameIgnoreCaseAndSurnameIgnoreCaseAndDateOfBirthAndIdNot(String name, String surname,
+			LocalDate dateOfBirth, Long id);
 
 }

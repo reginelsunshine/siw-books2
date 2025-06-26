@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import it.uniroma3.siw.controller.validator.AuthorValidator;
 import it.uniroma3.siw.model.Author;
 import it.uniroma3.siw.model.Book;
 import it.uniroma3.siw.repository.AuthorRepository;
@@ -41,6 +42,9 @@ public class AuthorController {
 	
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private AuthorValidator authorValidator;
 
 	//voglio l'elenco di tutti gli autori
 	@GetMapping("/author")
@@ -73,15 +77,23 @@ public class AuthorController {
 
 	//NB: MANCAVA IL GETMAPPING PER L'INSERIMENTO
 	@PostMapping("/admin/formAddAuthor")
-	public String addAuthor(@ModelAttribute("author") @Valid Author author, BindingResult bindingResult, Model model) {
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("authors", this.authorRepository.findAll());
-			return "/admin/indexAuthor.html";
-		}
-		this.authorRepository.save(author);
-		return "redirect:/admin/indexAuthor";
-	}
+	public String addAuthor(@Valid @ModelAttribute("author") Author author,
+	                        BindingResult bindingResult,
+	                        Model model) {
 
+	    authorValidator.validate(author, bindingResult);
+	    
+	    if (authorService.alreadyExists(author)) {
+	        bindingResult.reject("duplicate", "author.duplicate");
+	    }
+
+
+	    if (bindingResult.hasErrors()) {
+	        return "/admin/formAddAuthor.html";
+	    }
+	    authorService.save(author);
+	    return "redirect:/admin/indexAuthor";
+	}
 
 	// ====== MODIFICA AUTORE ======
 	@GetMapping("/admin/formUpdateAuthor")
