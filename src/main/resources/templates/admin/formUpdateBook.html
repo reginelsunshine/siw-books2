@@ -1,74 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Modifica Libro</title>
-    <link rel="stylesheet" href="/css/stile.css">
+<meta charset="UTF-8">
+<title>Modifica Libro</title>
+<link rel="stylesheet" href="/css/admin.css/formUpdateBook.css">
 </head>
 <body>
 
-<header>
-    <div th:if="${userDetails != null}">
-        <span th:text="${userDetails.username}"></span>
-        <a href="/logout">Logout</a>
-    </div>
-    <div th:if="${userDetails == null}">
-        <a href="/login">Login</a>
-    </div>
-</header>
+	<header>
+		<div th:if="${userDetails != null}">
+			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+		</div>
+		<div th:if="${userDetails == null}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
 
-<h1>Modifica Libro</h1>
+	<div class="container">
+		<h1>Modifica Libro</h1>
 
-<!-- ─────────────────────────────────────────────
+		<!-- ─────────────────────────────────────────────
      STEP 1 – scelta libro
      ───────────────────────────────────────────── -->
-<form action="#" method="get">
-    <label for="selectedBookId">Seleziona libro:</label>
-    <select name="selectedBookId" onchange="this.form.submit()">
-        <option value="">-- Scegli un libro --</option>
-        <option th:each="b : ${books}"
-                th:value="${b.id}"
-                th:text="${b.title}"
-                th:selected="${book != null} ? ${b.id} == ${book.id} : false">
-        </option>
-    </select>
-    <noscript><button type="submit">Carica libro</button></noscript>
-</form>
+		<form action="#" method="get">
+			<label for="selectedBookId">Seleziona libro:</label> <select
+				name="selectedBookId" onchange="this.form.submit()">
+				<option value="">-- Scegli un libro --</option>
+				<option th:each="b : ${books}" th:value="${b.id}"
+					th:text="${b.title}"
+					th:selected="${book != null} ? ${b.id} == ${book.id} : false">
+				</option>
+			</select>
+			<noscript>
+				<button type="submit">Carica libro</button>
+			</noscript>
+		</form>
 
-<!-- placeholder se nessun libro selezionato -->
-<div th:if="${book == null}">
-    <p>Scegli un libro dall’elenco per modificarne i dati.</p>
-</div>
+		<!-- placeholder se nessun libro selezionato -->
+		<div th:if="${book == null}">
+			<p>Scegli un libro dall’elenco per modificarne i dati.</p>
+		</div>
 
-<!-- ─────────────────────────────────────────────
+		<!-- ─────────────────────────────────────────────
      STEP 2 – form di aggiornamento (visibile solo se book è presente)
      ───────────────────────────────────────────── -->
-<div th:if="${book != null}">
-    <form th:action="@{/admin/formUpdateBook}"
-          th:object="${book}"
-          method="post"
-          enctype="multipart/form-data">
+		<div th:if="${book != null}">
+			<form th:action="@{/admin/formUpdateBook}" th:object="${book}"
+				method="post" enctype="multipart/form-data">
 
-        <input type="hidden" th:field="*{id}"/>
+				<input type="hidden" th:field="*{id}" /> <label>Titolo:</label> <input
+					type="text" th:field="*{title}" required> <span
+					th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br>
 
-        <label>Titolo:</label>
-        <input type="text" th:field="*{title}" required>
-        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br>
+				<label>Anno di pubblicazione:</label> <input type="number"
+					th:field="*{yearOfPublication}" required> <span
+					th:if="${#fields.hasErrors('yearOfPublication')}"
+					th:errors="*{yearOfPublication}"></span><br> <img
+					th:src="@{'/book/image/' + ${book.id}}" alt="copertina" width="200"><br>
 
-        <label>Anno di pubblicazione:</label>
-        <input type="number" th:field="*{yearOfPublication}" required>
-        <span th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}"></span><br>
+				<label>Cambia immagine:</label> <input type="file" name="imageFile"><br>
 
-        <img th:src="@{'/book/image/' + ${book.id}}"
-             alt="copertina"
-             width="200"><br>
-
-        <label>Cambia immagine:</label>
-        <input type="file" name="imageFile"><br>
-
-        <button type="submit">Salva</button>
-    </form>
-</div>
-
+				<button type="submit">Salva</button>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

@@ -1,69 +1,106 @@
 <!DOCTYPE html>
+<html lang="it">
 <head>
-    <title>Aggiungi Libro</title>
+    <meta charset="UTF-8" />
+    <title>SiwBooks2 – Aggiungi Libro</title>
+
+    <!-- CSS base del sito -->
     <link rel="stylesheet" href="/css/stile.css" />
+    <!-- CSS specifico per questo form -->
+    <link rel="stylesheet" href="/css/admin.css/formAddBook.css" />
 </head>
+
 <body>
+    <!-- ===== HEADER ================================================== -->
+    <header>
+        <!-- Utente autenticato -->
+        <div th:if="${userDetails != null}">
+            <span th:text="${userDetails.username}"></span>
+            <a href="/logout">Logout</a>
+        </div>
+        <!-- Utente non autenticato -->
+        <div th:if="${userDetails == null}">
+            <a href="/login">Login</a>
+        </div>
+    </header>
 
-<header>
-    <div th:if="${userDetails != null}">
-        <span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-    </div>
-    <div th:if="${userDetails == null}">
-        <a href="/login">Login</a>
-    </div>
-</header>
+    <!-- ===== CONTENITORE CENTRALE ==================================== -->
+    <div class="container">
+        <h1>Inserisci un nuovo libro</h1>
 
-<h1>Inserisci un nuovo libro</h1>
+        <form th:action="@{/admin/formAddBook}"
+              th:object="${book}"
+              method="post"
+              enctype="multipart/form-data">
 
-<form th:action="@{/admin/formAddBook}" th:object="${book}" method="post" enctype="multipart/form-data">
-    <div>
-        <label for="title">Titolo:</label>
-        <input type="text" th:field="*{title}" required />
-        <span th:if = "${#fields.hasErrors('title')}" th:errors="*{title}"></span>
-    </div>
+            <!-- Titolo -->
+            <div>
+                <label for="title">Titolo:</label>
+                <input type="text" th:field="*{title}" required />
+                <span th:if="${#fields.hasErrors('title')}"
+                      th:errors="*{title}"
+                      class="error"></span>
+            </div>
 
-    <div>
-        <label for="yearOfPublication">Anno di pubblicazione:</label>
-        <input type="number" th:field="*{yearOfPublication}" required />
-        <span th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}"></span>
-    </div>
+            <!-- Anno di pubblicazione -->
+            <div>
+                <label for="yearOfPublication">Anno di pubblicazione:</label>
+                <input type="number" th:field="*{yearOfPublication}" required />
+                <span th:if="${#fields.hasErrors('yearOfPublication')}"
+                      th:errors="*{yearOfPublication}"
+                      class="error"></span>
+            </div>
 
-    <div>
-        <label for="imageFile">Copertina:</label>
-        <input type="file" id="imageFile" name="imageFile" accept="image/*" />
-    </div>
+            <!-- Copertina -->
+            <div>
+                <label for="imageFile">Copertina:</label>
+                <input type="file"
+                       id="imageFile"
+                       name="imageFile"
+                       accept="image/*" />
+            </div>
 
-    <div>
-        <label for="authors">Autori:</label><br>
-        <input type="text" id="searchAuthor" placeholder="Cerca autore..." onkeyup="filterAuthors()"/><br>
-        <select id="authors" name="authorIds" multiple size="6" required>
-            <option th:each="author : ${authors}"
-                    th:value="${author.id}"
-                    th:text="${author.name + ' ' + author.surname}">
-            </option>
-        </select>
-    </div>
+            <!-- Autori (filtro + select multipla) -->
+            <div>
+                <label for="authors">Autori:</label><br />
+                <input type="text"
+                       id="searchAuthor"
+                       placeholder="Cerca autore..."
+                       onkeyup="filterAuthors()" /><br />
 
-    <div>
-        <button type="submit">Aggiungi libro</button>
-    </div>
-</form>
+                <select id="authors"
+                        name="authorIds"
+                        multiple
+                        size="6"
+                        required>
+                    <option th:each="author : ${authors}"
+                            th:value="${author.id}"
+                            th:text="${author.name + ' ' + author.surname}">
+                    </option>
+                </select>
+            </div>
 
-<div>
-    <a href="/admin/indexBook">Torna alla gestione libri</a>
-</div>
+            <!-- Pulsante -->
+            <button type="submit">Aggiungi libro</button>
+        </form>
 
-<script>
-function filterAuthors() {
-    let input = document.getElementById("searchAuthor").value.toLowerCase();
-    let options = document.getElementById("authors").options;
-    for (let i = 0; i < options.length; i++) {
-        let text = options[i].text.toLowerCase();
-        options[i].style.display = text.includes(input) ? "" : "none";
-    }
-}
-</script>
+        <!-- Link di ritorno -->
+        <a href="/admin/indexBook" class="back-link">
+            Torna alla gestione libri
+        </a>
+    </div><!-- /.container -->
 
+    <!-- ===== SCRIPT DI FILTRO AUTORI ================================= -->
+    <script>
+        function filterAuthors() {
+            const input   = document.getElementById("searchAuthor").value.toLowerCase();
+            const options = document.getElementById("authors").options;
+
+            for (let i = 0; i < options.length; i++) {
+                const visible = options[i].text.toLowerCase().includes(input);
+                options[i].style.display = visible ? "" : "none";
+            }
+        }
+    </script>
 </body>
 </html>

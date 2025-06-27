@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <title>Elimina Libro</title>
-    <link rel="stylesheet" href="/css/stile.css" />
+<meta charset="UTF-8" />
+<title>Elimina Libro</title>
+<link rel="stylesheet" href="/css/admin.css/admin-stile.css" />
 </head>
 <body>
 
-<header>
+	<header>
 		<!-- Mostra solo se utente è autenticato -->
 		<div th:if="${userDetails != null}">
 			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
@@ -16,28 +17,29 @@
 			<a href="/login">Login</a>
 		</div>
 	</header>
-<div>
-		<img src="/images/logo-siw.png" width="20%" />
+	
+
+	<div class="container">
+		<h1>Elimina un libro</h1>
+
+		<form th:action="@{/deleteBook}" method="post">
+			<div>
+				<label for="bookId">Seleziona libro da eliminare:</label> <select
+					id="bookId" name="bookId" required>
+					<option value="" disabled selected>-- Scegli un libro --</option>
+					<option th:each="book : ${books}" th:value="${book.id}"
+						th:text="${book.title}"></option>
+				</select>
+			</div>
+
+			<div>
+				<button type="submit">Elimina</button>
+			</div>
+		</form>
+
+		<div>
+			<a href="/admin/indexBook">Torna alla gestione libri</a>
+		</div>
 	</div>
-<h1>Elimina un libro</h1>
-
-<form th:action="@{/deleteBook}" method="post">
-    <div>
-        <label for="bookId">Seleziona libro da eliminare:</label>
-        <select id="bookId" name="bookId" required>
-            <option value="" disabled selected>-- Scegli un libro --</option>
-            <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
-        </select>
-    </div>
-
-    <div>
-        <button type="submit">Elimina</button>
-    </div>
-</form>
-
-<div>
-    <a href="/admin/indexBook">Torna alla gestione libri</a>
-</div>
-
 </body>
 </html>
