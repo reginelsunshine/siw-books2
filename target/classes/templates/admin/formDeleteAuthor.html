@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <head>
-    <title>Eliminazione Autori</title>
-    <link rel="stylesheet" href="/css/stile.css" />
+<title>Eliminazione Autori</title>
+<link rel="stylesheet" href="/css/admin.css/admin-stile.css" />
 </head>
 <body>
 
-<header>
+	<header>
 		<!-- Mostra solo se utente è autenticato -->
 		<div th:if="${userDetails != null}">
 			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
@@ -16,30 +16,32 @@
 		</div>
 	</header>
 
-<h1>Seleziona gli autori da eliminare</h1>
+	<div class="container">
+		<h1>Seleziona gli autori da eliminare</h1>
 
-<form th:action="@{/admin/deleteAuthors}" method="post">
-    <table>
-        <thead>
-            <tr>
-                <th>Seleziona</th>
-                <th>Nome</th>
-                <th>Cognome</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="author : ${authors}">
-                <td><input type="checkbox" name="authorIds" th:value="${author.id}"/></td>
-                <td th:text="${author.name}"></td>
-                <td th:text="${author.surname}"></td>
-            </tr>
-        </tbody>
-    </table>
+		<form th:action="@{/admin/deleteAuthors}" method="post">
+			<table>
+				<thead>
+					<tr>
+						<th>Seleziona</th>
+						<th>Nome</th>
+						<th>Cognome</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="author : ${authors}">
+						<td><input type="checkbox" name="authorIds"
+							th:value="${author.id}" /></td>
+						<td th:text="${author.name}"></td>
+						<td th:text="${author.surname}"></td>
+					</tr>
+				</tbody>
+			</table>
 
-    <button type="submit">Elimina selezionati</button>
-</form>
+			<button type="submit">Elimina selezionati</button>
+		</form>
 
-<a href="/admin/indexAuthor">Annulla</a>
-
+		<a href="/admin/indexAuthor">Annulla</a>
+	</div>
 </body>
 </html>

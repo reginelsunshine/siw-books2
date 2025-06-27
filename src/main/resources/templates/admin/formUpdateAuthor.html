@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <head>
-    <title>Modifica Autore</title>
-    <link rel="stylesheet" href="/css/stile.css" />
+<title>Modifica Autore</title>
+<link rel="stylesheet" href="/css/admin.css/admin-stile.css" />
 </head>
 <body>
 
-<header>
+	<header>
 		<!-- Mostra solo se utente è autenticato -->
 		<div th:if="${userDetails != null}">
 			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
@@ -16,48 +16,46 @@
 		</div>
 	</header>
 
-<h1>Seleziona un autore da modificare</h1>
+	<div class="container">
+		<h1>Seleziona un autore da modificare</h1>
 
-<ul>
-    <li th:each="a : ${authors}">
-        <span th:text="${a.name} + ' ' + ${a.surname}"></span> -
-        <a th:href="@{'/admin/formUpdateAuthor?id=' + ${a.id} }">Modifica</a>
-    </li>
-</ul>
+		<ul>
+			<li th:each="a : ${authors}"><span
+				th:text="${a.name} + ' ' + ${a.surname}"></span> - <a
+				th:href="@{'/admin/formUpdateAuthor?id=' + ${a.id} }">Modifica</a></li>
+		</ul>
 
-<div th:if="${author != null}">
-    <h2>Modifica Autore: <span th:text="${author.name} + ' ' + ${author.surname}"></span></h2>
+		<div th:if="${author != null}">
+			<h2>
+				Modifica Autore: <span
+					th:text="${author.name} + ' ' + ${author.surname}"></span>
+			</h2>
 
-   <form th:action="@{/admin/formUpdateAuthor}" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="id" th:value="${author.id}" />
+			<form th:action="@{/admin/formUpdateAuthor}" method="post"
+				enctype="multipart/form-data">
+				<input type="hidden" name="id" th:value="${author.id}" /> <label>Nome:</label>
+				<input type="text" name="name" th:value="${author.name}" required /><br>
 
-    <label>Nome:</label>
-    <input type="text" name="name" th:value="${author.name}" required /><br>
+				<label>Cognome:</label> <input type="text" name="surname"
+					th:value="${author.surname}" required /><br> <label>Data
+					di nascita:</label> <input type="date" name="dateOfBirth"
+					th:value="${author.dateOfBirth}" required /><br> <label>Data
+					di morte:</label> <input type="date" name="dateOfDeath"
+					th:value="${author.dateOfDeath}" /><br> <label>Nazionalità:</label>
+				<input type="text" name="nationality"
+					th:value="${author.nationality}" /><br> <label>Immagine
+					autore:</label> <input type="file" name="imageFile" accept="image/*" /><br>
 
-    <label>Cognome:</label>
-    <input type="text" name="surname" th:value="${author.surname}" required /><br>
+				<!-- Mostra immagine esistente, se presente -->
+				<div th:if="${author.image != null}">
+					<img th:src="@{'/author/image/' + ${author.id}}"
+						alt="Immagine autore" width="150" />
+				</div>
 
-    <label>Data di nascita:</label>
-    <input type="date" name="dateOfBirth" th:value="${author.dateOfBirth}" required /><br>
+				<button type="submit">Salva modifiche</button>
+			</form>
 
-    <label>Data di morte:</label>
-    <input type="date" name="dateOfDeath" th:value="${author.dateOfDeath}" /><br>
-
-    <label>Nazionalità:</label>
-    <input type="text" name="nationality" th:value="${author.nationality}" /><br>
-
-    <label>Immagine autore:</label>
-    <input type="file" name="imageFile" accept="image/*" /><br>
-
-    <!-- Mostra immagine esistente, se presente -->
-    <div th:if="${author.image != null}">
-        <img th:src="@{'/author/image/' + ${author.id}}" alt="Immagine autore" width="150" />
-    </div>
-
-    <button type="submit">Salva modifiche</button>
-</form>
-
-</div>
-
+		</div>
+	</div>
 </body>
 </html>

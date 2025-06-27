@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Aggiungi Autore</title>
-    <link rel="stylesheet" href="/css/stile.css"/>
+    <link rel="stylesheet" href="/css/admin.css/admin-stile.css"/>
 </head>
 <body>
 
@@ -20,9 +20,8 @@
     </div>
 </header>
 
+<div class="container">
 <h1>Inserisci un nuovo autore</h1>
-
-
 
 <form th:action="@{/admin/formAddAuthor}"
       th:object="${author}"
@@ -54,6 +53,6 @@
 
     <button type="submit">Salva</button>
 </form>
-
+</div>
 </body>
 </html>
