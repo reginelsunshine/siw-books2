@@ -1,45 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>SiwBooks2 - Homepage</title>
-<link rel="stylesheet" href="/css/stile.css" />
+    <meta charset="UTF-8">
+    <title>SiwBooks2 - Homepage</title>
+    <link rel="stylesheet" href="/css/stile.css" />
 </head>
 
 <body>
-	<header>
-		<!-- Mostra solo se utente è autenticato -->
-		<div th:if="${userDetails != null}">
-			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-		</div>
-		<!-- Mostra solo se utente NON è autenticato -->
-		<div th:if="${userDetails == null}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
+    <header>
+        <!-- Mostra solo se utente è autenticato -->
+        <div th:if="${userDetails != null}">
+            <span th:text="${userDetails.username}"></span>
+            <a href="/logout">Logout</a>
+        </div>
+        <!-- Mostra solo se utente NON è autenticato -->
+        <div th:if="${userDetails == null}">
+            <a href="/login">Login</a>
+        </div>
+    </header>
 
-	<div class="logo">
-		<img src="/images/logo-siw.png" width="20%" />
-	</div>
+    <div class="logo">
+        <img src="/images/logo-siw.png" alt="Logo SiwBooks2" width="20%">
+    </div>
 
-	<h1>Consulta Libri e Autori</h1>
+    <h1>Consulta Libri e Autori</h1>
 
-	<div class="box">
-		<div class="paragraph">
-			<h3>
-				<a href="/book"> <!-- DEVI FARE ATTENZIONE A NON AVER GETMAPPING SULLA STESSA ROTTA ANCHE IN DIVERSE CLASSI -->
-					<img src="/images/book-icon.png" alt="Icona libro" width="40" />
-					Elenco Libri
-				</a>
-			</h3>
-		</div>
-		<div class="paragraph">
-			<h3>
-				<a href="/author"> <img src="/images/author-icon.png"
-					alt="Icona libro" width="40" /> Elenco Autori 
-				</a>
-				
-			</h3>
-		</div>
-	</div>
+    <!-- ============== BLOCCO AFFIANCATO ============== -->
+    <div class="content-row">
+
+        <!-- Card libri / autori -->
+        <div class="box">
+            <div class="paragraph">
+                <h3>
+                    <a href="/book">
+                        <img src="/images/book-icon.png" alt="Icona libro" width="40">
+                        Elenco Libri
+                    </a>
+                </h3>
+            </div>
+            <div class="paragraph">
+                <h3>
+                    <a href="/author">
+                        <img src="/images/author-icon.png" alt="Icona autore" width="40">
+                        Elenco Autori
+                    </a>
+                </h3>
+            </div>
+        </div>
+
+        <!-- Card login / registrazione -->
+        <div class="login-box">
+            <p>Se sei registrato, <a href="/login">accedi</a>.</p>
+            <p>Se non sei ancora registrato, <a href="/register">registrati</a>.</p>
+        </div>
+
+    </div><!-- /.content-row -->
 </body>
 </html>

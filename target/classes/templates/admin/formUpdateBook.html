@@ -1,60 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Modifica Libro</title>
-<link rel="stylesheet" href="/css/stile.css" />
+    <meta charset="UTF-8">
+    <title>Modifica Libro</title>
+    <link rel="stylesheet" href="/css/stile.css">
 </head>
 <body>
+
 <header>
-		<!-- Mostra solo se utente è autenticato -->
-		<div th:if="${userDetails != null}">
-			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-		</div>
-		<!-- Mostra solo se utente NON è autenticato -->
-		<div th:if="${userDetails == null}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
-	<div>
-		<img src="/images/logo-siw.png" width="20%" />
-	</div>
-	<h1>Modifica Libro</h1>
+    <div th:if="${userDetails != null}">
+        <span th:text="${userDetails.username}"></span>
+        <a href="/logout">Logout</a>
+    </div>
+    <div th:if="${userDetails == null}">
+        <a href="/login">Login</a>
+    </div>
+</header>
 
-	<!-- FORM per scegliere libro -->
-	<form action="#" method="get">
-		<label for="selectedBookId">Seleziona libro:</label> <select
-			name="selectedBookId" onchange="this.form.submit()">
-			<option value="">-- Scegli un libro --</option>
-			<th:block th:each="b : ${books}">
-				<option th:value="${b.id}" th:text="${b.title}"
-					th:selected="${book != null} ? ${b.id} == ${book.id} : false">
-				</option>
-			</th:block>
-		</select>
-		<noscript>
-			<button type="submit">Carica libro</button>
-		</noscript>
-	</form>
+<h1>Modifica Libro</h1>
 
-	<!-- FORM per aggiornare dati libro, solo se libro selezionato -->
-<form th:action="@{/admin/formUpdateBook}" th:object="${book}" method="post" enctype="multipart/form-data">
-    <input type="hidden" th:field="*{id}" />
-    
-    <label for="title">Titolo:</label>
-    <input type="text" th:field="*{title}" required />
-    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br />
-
-    <label for="yearOfPublication">Anno di pubblicazione:</label>
-    <input type="number" th:field="*{yearOfPublication}" required />
-    <span th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}"></span><br />
-
-    <img th:src="@{'/book/image/' + ${book.id}}" alt="Immagine libro" width="200" />
-    <label for="imageFile">Cambia immagine:</label>
-    <input type="file" name="imageFile" /><br />
-
-    <button type="submit">Salva</button>
+<!-- ─────────────────────────────────────────────
+     STEP 1 – scelta libro
+     ───────────────────────────────────────────── -->
+<form action="#" method="get">
+    <label for="selectedBookId">Seleziona libro:</label>
+    <select name="selectedBookId" onchange="this.form.submit()">
+        <option value="">-- Scegli un libro --</option>
+        <option th:each="b : ${books}"
+                th:value="${b.id}"
+                th:text="${b.title}"
+                th:selected="${book != null} ? ${b.id} == ${book.id} : false">
+        </option>
+    </select>
+    <noscript><button type="submit">Carica libro</button></noscript>
 </form>
 
-	</div>
+<!-- placeholder se nessun libro selezionato -->
+<div th:if="${book == null}">
+    <p>Scegli un libro dall’elenco per modificarne i dati.</p>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     STEP 2 – form di aggiornamento (visibile solo se book è presente)
+     ───────────────────────────────────────────── -->
+<div th:if="${book != null}">
+    <form th:action="@{/admin/formUpdateBook}"
+          th:object="${book}"
+          method="post"
+          enctype="multipart/form-data">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <label>Titolo:</label>
+        <input type="text" th:field="*{title}" required>
+        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br>
+
+        <label>Anno di pubblicazione:</label>
+        <input type="number" th:field="*{yearOfPublication}" required>
+        <span th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}"></span><br>
+
+        <img th:src="@{'/book/image/' + ${book.id}}"
+             alt="copertina"
+             width="200"><br>
+
+        <label>Cambia immagine:</label>
+        <input type="file" name="imageFile"><br>
+
+        <button type="submit">Salva</button>
+    </form>
+</div>
+
 </body>
 </html>

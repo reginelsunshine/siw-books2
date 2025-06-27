@@ -44,14 +44,12 @@ public class AuthorService {
 	}
 
 	public boolean alreadyExists(Author author) {
-	    if (author.getId() == null) { // nuovo autore
-	        return authorRepository.existsByNameIgnoreCaseAndSurnameIgnoreCaseAndDateOfBirth(
-	                author.getName(), author.getSurname(), author.getDateOfBirth());
-	    } else { // aggiornamento
-	        return authorRepository.existsByNameIgnoreCaseAndSurnameIgnoreCaseAndDateOfBirthAndIdNot(
-	                author.getName(), author.getSurname(), author.getDateOfBirth(), author.getId());
-	    }
+	    return authorRepository
+	           .existsByNameIgnoreCaseAndSurnameIgnoreCaseAndDateOfBirth(
+	                   author.getName(), author.getSurname(), author.getDateOfBirth());
 	}
+
+
 
 	
 }

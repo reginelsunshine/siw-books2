@@ -1,0 +1,75 @@
+body {
+  font-family: "Geneva", Tahoma, Geneva, Verdana, sans-serif;
+  color: rgba(102, 0, 0, 1);
+  margin: 0;
+  padding: 0 1em;
+  background: #fff;
+}
+
+header {
+  background-color: rgba(102, 0, 0, 1);
+  color: white;
+  height: 4em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 1em;
+  margin-bottom: 1em;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+  margin-left: 1em;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+header a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logo {
+  margin-bottom: 1em;
+}
+
+.logo img {
+  width: 85%;
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+h1 {
+  color: rgba(102, 0, 0, 1);
+  margin-bottom: 1em;
+  font-weight: 700;
+}
+
+.links-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  margin-bottom: 2em;
+}
+
+.links-group a {
+  background-color: rgba(135, 135, 51, 0.8);
+  color: white;
+  padding: 0.7em 1em;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.links-group a:hover {
+  background-color: rgba(153, 0, 0, 1);
+}

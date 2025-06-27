@@ -1,57 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-<title>Libro</title>
-<link rel="stylesheet" href="/css/stile.css" />
+    <meta charset="UTF-8">
+    <title>SiwBooks2 – Dettagli Libro</title>
+    <link rel="stylesheet" href="/css/stile.css" />
 </head>
+
 <body>
-	<header>
-		<!-- Mostra solo se utente è autenticato -->
-		<div th:if="${userDetails != null}">
-			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-		</div>
-		<!-- Mostra solo se utente NON è autenticato -->
-		<div th:if="${userDetails == null}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
+    <header>
+        <!-- Mostra solo se utente è autenticato -->
+        <div th:if="${userDetails != null}">
+            <span th:text="${userDetails.username}"></span>
+            <a href="/logout">Logout</a>
+        </div>
+        <!-- Mostra solo se utente NON è autenticato -->
+        <div th:if="${userDetails == null}">
+            <a href="/login">Login</a>
+        </div>
+    </header>
 
-	<div>
-		<a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
-	</div>
-	<h1>Dettagli Libro</h1>
-	<div th:if="${book}">
-		<span th:text="${book.title}">Up!</span> <span
-			th:text="'(' + ${book.yearOfPublication} + ')'">2000</span> <span>
-			<img th:src="@{/book/image/{id}(id=${book.id})}" alt="Immagine libro"
-			width="200" />
-			
-		</span>
-	</div>
-	<div th:unless="${book}">Non esiste</div>
+    <div class="logo">
+        <a href="/"><img src="/images/logo-siw.png" alt="Logo SiwBooks2" width="20%"></a>
+    </div>
 
-<h2>Recensioni</h2>
+    <h1>Dettagli Libro</h1>
 
-<div th:if="${reviews.size() == 0}">
-    <p>Nessuno ha ancora recensito questo libro.</p>
-</div>
+    <!-- ==================== CARD LIBRO ==================== -->
+    <div class="book-details" th:if="${book}">
+        <img class="book-cover-large"
+             th:src="@{/book/image/{id}(id=${book.id})}"
+             alt="Copertina libro"
+             width="200"
+             onerror="this.onerror=null;this.src='/images/default-book.png';">
 
-<ul th:each="review : ${reviews}">
-    <li>
-        <strong th:text="${review.user.name}">Utente</strong> - 
-        <span th:text="${review.title}">Titolo</span>:
-        <em th:text="${review.content}">Testo</em> 
-        (Voto: <span th:text="${review.rating}"></span>)
-    </li>
-</ul>
+        <div class="book-meta">
+            <h2 class="book-title" th:text="${book.title}">Titolo</h2>
+            <span class="book-year"
+                  th:text="'(' + ${book.yearOfPublication} + ')'">
+                  (2000)
+            </span>
+        </div>
+    </div>
 
-<h2>Autori</h2>
-<div th:if="${authorsBook.size() == 0}">
-    <p>Nessun autore per questo libro.</p>
-</div>
-<ul th:each="author : ${authorsBook}">
-   <li th:text="${author.name + ' ' + author.surname}"></li>
-</ul>
+    <div class="empty-book" th:unless="${book}">
+        Non esiste
+    </div>
 
+    <!-- ==================== RECENSIONI ==================== -->
+    <section class="reviews-section">
+        <h2>Recensioni</h2>
+
+        <div class="no-reviews" th:if="${reviews.size() == 0}">
+            Nessuno ha ancora recensito questo libro.
+        </div>
+
+        <ul class="reviews-list" th:if="${reviews.size() > 0}">
+            <li class="review-item" th:each="review : ${reviews}">
+                <strong th:text="${review.user.name}">Utente</strong> –
+                <span class="review-title" th:text="${review.title}">Titolo</span>:
+                <em class="review-content" th:text="${review.content}">Testo</em>
+                <span class="review-rating">
+                    Voto: <span th:text="${review.rating}">5</span>
+                </span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- ==================== AUTORI ==================== -->
+    <section class="authors-section">
+        <h2>Autori</h2>
+
+        <div class="no-authors" th:if="${authorsBook.size() == 0}">
+            Nessun autore per questo libro.
+        </div>
+
+        <ul class="authors-list" th:if="${authorsBook.size() > 0}">
+            <li th:each="author : ${authorsBook}"
+                th:text="${author.name + ' ' + author.surname}">
+                Nome Cognome
+            </li>
+        </ul>
+    </section>
 </body>
 </html>

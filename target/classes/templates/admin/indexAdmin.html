@@ -2,39 +2,39 @@
 <html>
 
 <head>
-<title>SiwBooks2 - Admin Homepage</title>
-<link rel="stylesheet" href="/css/stile.css" />
+  <title>SiwBooks2 - Admin Homepage</title>
+  <link rel="stylesheet" href="/css/admin.css/indexAdmin.css" />
 </head>
 
 <body>
-<header>
-		<!-- Mostra solo se utente è autenticato -->
-		<div th:if="${userDetails != null}">
-			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-		</div>
-		<!-- Mostra solo se utente NON è autenticato -->
-		<div th:if="${userDetails == null}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
+  <header>
+    <!-- Mostra solo se utente è autenticato -->
+    <div th:if="${userDetails != null}">
+      <span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
+    </div>
+    <!-- Mostra solo se utente NON è autenticato -->
+    <div th:if="${userDetails == null}">
+      <a href="/login">Login</a>
+    </div>
+  </header>
 
-	<div>
-		<img src="/images/logo-siw.png" width="20%" />
-	</div>
-	<h1>Consulta l'archivio</h1>
-	<div>
-		<a href="/book">Elenco Libri</a>
-	</div>
-	<div>
-		<a href="/author">Elenco Autori</a>
-	</div>
-	<h1>Operazioni per amministratore</h1>
-	<div>
-		<a href="/admin/indexBook">Operazioni sui libri</a>
-	</div>
-	<div>
-		<a href="/admin/indexAuthor">Operazioni sugli autori</a>
-	</div>
+  <div class="container">
+    <div class="logo">
+      <img src="/images/logo-siw.png" alt="Logo SIW" />
+    </div>
+
+    <h1>Consulta l'archivio</h1>
+    <div class="links-group">
+      <a href="/book">Elenco Libri</a>
+      <a href="/author">Elenco Autori</a>
+    </div>
+
+    <h1>Operazioni per amministratore</h1>
+    <div class="links-group">
+      <a href="/admin/indexBook">Operazioni sui libri</a>
+      <a href="/admin/indexAuthor">Operazioni sugli autori</a>
+    </div>
+  </div>
 </body>
 
 </html>

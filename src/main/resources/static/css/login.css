@@ -1,0 +1,118 @@
+/* Header rosso scuro */
+header {
+  background-color: rgba(102, 0, 0, 1); /* rosso scuro */
+  color: white;
+  height: 4em;
+  margin-bottom: 0.5em;
+  padding: 0 1em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: "Geneva", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.9em;
+  margin-left: 1em;
+}
+
+header a:hover {
+  text-decoration: underline;
+}
+
+/* Container centrale per il form */
+.login-wrapper {
+  max-width: 400px;
+  margin: 0 auto; /* orizzontale centrato */
+  padding: 0 1em;
+  font-family: "Geneva", Tahoma, Geneva, Verdana, sans-serif;
+  color: rgba(102, 0, 0, 1);
+  text-align: center;
+}
+
+/* Logo centrato sopra */
+.login-wrapper > a img {
+  width: 75%;
+  display: block;
+  margin: 0 auto 1em auto;
+}
+
+/* Titolo pagina */
+.login-wrapper h1 {
+  margin-bottom: 1.5em;
+  font-weight: bold;
+  color: rgba(102, 0, 0, 1);
+}
+
+/* Form */
+form {
+  text-align: left;
+}
+
+form div {
+  margin-bottom: 1em;
+}
+
+form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+}
+
+form input[type="text"],
+form input[type="password"] {
+  width: 100%;
+  padding: 0.5em;
+  font-size: 1em;
+  border: 1.5px solid rgba(102, 0, 0, 1);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+  border-color: rgba(153, 0, 0, 1);
+  outline: none;
+}
+
+form button {
+  width: 100%;
+  background-color: rgba(102, 0, 0, 1);
+  color: white;
+  font-weight: 700;
+  padding: 0.6em;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: rgba(153, 0, 0, 1);
+}
+
+/* Messaggio errore */
+.error-message {
+  color: #b20000;
+  font-weight: 600;
+  margin-bottom: 1em;
+}
+
+/* Link registrazione */
+.register-link {
+  margin-top: 1.5em;
+  text-align: center;
+}
+
+.register-link a {
+  color: rgba(102, 0, 0, 1);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}

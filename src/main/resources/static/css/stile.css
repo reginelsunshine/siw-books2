@@ -1,50 +1,349 @@
-/* Stili generali */
-body { 
-    font-family: "Geneva";
+/* ============== STILI GENERALI ============== */
+body{
+    font-family: "Geneva", sans-serif;
     color: FireBrick;
+    margin: 0;
+    padding: 0;
 }
 
-a { 
-    text-decoration: none; 
+h1{
+    text-align: center;          /* ora centrato */
+    margin-top: 0.5rem;
+}
+
+a{
+    text-decoration: none;
     color: #000040;
 }
 
-a:hover { 
-    text-decoration: underline; 
+a:hover{
+    text-decoration: underline;
 }
 
-label {
+label{
     width: 8em;
     display: inline-block;
 }
 
-/* Header */
-header {
+/* ============== HEADER ============== */
+header{
     background-color: rgb(102, 0, 0);
-    color: white;
+    color: #fff;
     height: 4em;
     margin-bottom: 0.5em;
-    padding: 0.2em;
-    text-align: right; 
+    padding: 0.2em 1.2em;
+    text-align: right;
 }
 
-header a { 
-    text-decoration: none; 
-    color: white;
+header a{
+    color: #fff;
     font-size: 0.6em;
 }
 
-/* Box contenitore per link */
-.box {
+/* ============== LOGO ============== */
+.logo{
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+/* ============== CARD LIBRI / AUTORI ============== */
+.box{
     background-color: bisque;
-    width: 300px;
+    width: 360px;               /* più grande di prima */
+    flex: 0 0 360px;            /* stessa larghezza in flexbox */
     border: 10px solid green;
-    padding: 20px;
-    margin: 5px;
+    padding: 24px;
+    margin: 5px 0;
 }
 
-.paragraph {
-    margin-bottom: 20px; /* Aggiunge spazio tra i link */
+.paragraph{
+    margin-bottom: 24px;
 }
 
+/* ============== CARD LOGIN / REGISTRAZIONE ============== */
+.login-box{
+    width: 360px;               /* più grande di prima */
+    flex: 0 0 360px;
+    max-width: 360px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.05);
+    padding: 1.8rem 2.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    text-align: center;
+    font-size: 1.05rem;
+}
 
+.login-box a{
+    color: rgb(102, 0, 0);
+    font-weight: 600;
+    transition: opacity .2s;
+}
+
+.login-box a:hover{
+    opacity: .85;
+}
+
+/* ============== RIGA FLEX: LIBRI + LOGIN ============== */
+.content-row{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    padding: 0 1rem;
+}
+
+/* ============== RESPONSIVE ============== */
+@media (max-width: 780px){
+    .login-box, .box{
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* ============== LISTA LIBRI (CARD STYLE) ============== */
+.books-list{
+    list-style: none;
+    padding: 0;
+    margin: 2rem auto;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.book-item{
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.04);
+    padding: 1rem 1.4rem;
+}
+
+.book-cover{
+    flex: 0 0 auto;
+    border-radius: 4px;
+}
+
+.book-info{
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.book-title{
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #000040;
+}
+
+.review-link{
+    align-self: flex-start;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    background: rgb(102, 0, 0);
+    color: #fff;
+    border-radius: 4px;
+    transition: opacity .2s;
+}
+
+.review-link:hover{
+    opacity: .85;
+}
+
+/* ============== RESPONSIVE ============== */
+@media (max-width: 600px){
+    .book-item{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    .book-cover{
+        width: 80px;
+        height: 120px;
+    }
+}
+
+/* =========================================================
+   DETTAGLI LIBRO
+========================================================= */
+.book-details{
+    display:flex;
+    flex-wrap:wrap;
+    gap:2rem;
+    max-width:900px;
+    margin:2rem auto;
+    background:#fff;
+    border:1px solid #e0e0e0;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
+    padding:1.5rem;
+}
+
+.book-cover-large{
+    width:200px;
+    height:auto;
+    border-radius:4px;
+    flex:0 0 auto;
+}
+
+.book-meta{
+    display:flex;
+    flex-direction:column;
+    gap:0.6rem;
+    justify-content:center;
+}
+
+.book-title{
+    font-size:1.6rem;
+    font-weight:600;
+    color:#000040;
+}
+
+.book-year{
+    font-size:1.1rem;
+    color:#555;
+}
+
+/* ---------- RECENSIONI ---------- */
+.reviews-section,
+.authors-section{
+    max-width:900px;
+    margin:2rem auto;
+}
+
+.reviews-list,
+.authors-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+}
+
+.review-item{
+    background:#fff;
+    border:1px solid #e0e0e0;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,.04);
+    padding:1rem;
+}
+
+.review-rating{
+    font-size:0.9rem;
+    margin-left:0.4rem;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:600px){
+    .book-details{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+    }
+    .book-meta{
+        align-items:center;
+    }
+}
+
+/* =========================================================
+   LISTA AUTORI
+========================================================= */
+.authors-list{
+    list-style:none;
+    padding:0;
+    margin:2rem auto;
+    max-width:900px;
+    display:flex;
+    flex-direction:column;
+    gap:1.2rem;
+}
+
+.author-item{
+    display:flex;
+    align-items:center;
+    gap:1.2rem;
+    background:#fff;
+    border:1px solid #e0e0e0;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,.04);
+    padding:0.8rem 1.4rem;
+}
+
+.author-photo{
+    border-radius:50%;
+    object-fit:cover;
+    width:60px;
+    height:60px;
+    flex:0 0 auto;
+}
+
+.author-name{
+    font-size:1.15rem;
+    font-weight:600;
+    color:#000040;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:600px){
+    .author-item{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+        gap:0.8rem;
+    }
+}
+
+/* =========================================================
+   DETTAGLI AUTORE
+========================================================= */
+.author-details{
+    display:flex;
+    flex-wrap:wrap;
+    gap:2rem;
+    max-width:900px;
+    margin:2rem auto;
+    background:#fff;
+    border:1px solid #e0e0e0;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
+    padding:1.5rem;
+}
+
+.author-photo-large{
+    width:200px;
+    height:200px;
+    object-fit:cover;
+    border-radius:50%;
+    flex:0 0 auto;
+}
+
+.author-meta{
+    display:flex;
+    flex-direction:column;
+    gap:0.6rem;
+    justify-content:center;
+    font-size:1.05rem;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:600px){
+    .author-details{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+    }
+    .author-photo-large{
+        width:180px;
+        height:180px;
+    }
+}

@@ -1,48 +1,59 @@
+<!-- =========================================================
+     formAddAuthor.html (Thymeleaf template)
+     ========================================================= -->
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Aggiungi Autore</title>
-<link rel="stylesheet" href="/css/stile.css" />
+    <meta charset="UTF-8">
+    <title>Aggiungi Autore</title>
+    <link rel="stylesheet" href="/css/stile.css"/>
 </head>
 <body>
 
 <header>
-		<!-- Mostra solo se utente è autenticato -->
-		<div th:if="${userDetails != null}">
-			<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-		</div>
-		<!-- Mostra solo se utente NON è autenticato -->
-		<div th:if="${userDetails == null}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
+    <div th:if="${userDetails != null}">
+        <span th:text="${userDetails.username}"></span>
+        <a href="/logout">Logout</a>
+    </div>
+    <div th:if="${userDetails == null}">
+        <a href="/login">Login</a>
+    </div>
+</header>
 
 <h1>Inserisci un nuovo autore</h1>
 
-<form th:action="@{/admin/formAddAuthor}" th:object="${author}" method="post" enctype="multipart/form-data">
-   <label>Nome:</label>
-   <input type="text" th:field="*{name}" required>
-   <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span><br>
 
-   <label>Cognome:</label>
-   <input type="text" th:field="*{surname}" required>
-   <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span><br>
 
-   <label>Data di nascita:</label>
-   <input type="date" th:field="*{dateOfBirth}" required>
-   <span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span><br>
+<form th:action="@{/admin/formAddAuthor}"
+      th:object="${author}"
+      method="post"
+      enctype="multipart/form-data">
 
-   <label>Data di morte:</label>
-   <input type="date" th:field="*{dateOfDeath}">
-   <span th:if="${#fields.hasErrors('dateOfDeath')}" th:errors="*{dateOfDeath}"></span><br>
+    <label>Nome:</label>
+    <input type="text" th:field="*{name}" required>
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span><br>
 
-   <label>Nazionalità:</label>
-   <input type="text" th:field="*{nationality}">
-   <span th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"></span><br>
+    <label>Cognome:</label>
+    <input type="text" th:field="*{surname}" required>
+    <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span><br>
 
-   <label>Foto:</label>
-   <input type="file" name="imageFile" accept="image/*"><br>
+    <label>Data di nascita:</label>
+    <input type="date" th:field="*{dateOfBirth}" required>
+    <span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span><br>
 
-   <button type="submit">Salva</button>
+    <label>Data di morte:</label>
+    <input type="date" th:field="*{dateOfDeath}">
+    <span th:if="${#fields.hasErrors('dateOfDeath')}" th:errors="*{dateOfDeath}"></span><br>
+
+    <label>Nazionalità:</label>
+    <input type="text" th:field="*{nationality}">
+    <span th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"></span><br>
+
+    <label>Foto:</label>
+    <input type="file" name="imageFile" accept="image/*"><br>
+
+    <button type="submit">Salva</button>
 </form>
+
 </body>
 </html>

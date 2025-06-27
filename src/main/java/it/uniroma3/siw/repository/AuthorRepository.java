@@ -21,4 +21,6 @@ public interface AuthorRepository  extends CrudRepository<Author, Long>{
 	boolean existsByNameIgnoreCaseAndSurnameIgnoreCaseAndDateOfBirthAndIdNot(String name, String surname,
 			LocalDate dateOfBirth, Long id);
 
+	boolean existsByNameAndSurnameAndDateOfBirth(String name, String surname, LocalDate dateOfBirth);
+
 }

@@ -79,21 +79,25 @@ public class AuthorController {
 	@PostMapping("/admin/formAddAuthor")
 	public String addAuthor(@Valid @ModelAttribute("author") Author author,
 	                        BindingResult bindingResult,
-	                        Model model) {
+	                        @RequestParam("imageFile") MultipartFile imageFile,
+	                        Model model) throws IOException {
 
 	    authorValidator.validate(author, bindingResult);
-	    
-	    if (authorService.alreadyExists(author)) {
-	        bindingResult.reject("duplicate", "author.duplicate");
-	    }
-
 
 	    if (bindingResult.hasErrors()) {
-	        return "/admin/formAddAuthor.html";
+	        return "admin/formAddAuthor";
 	    }
+
+	    if (!imageFile.isEmpty()) {
+	        author.setImage(imageFile.getBytes());
+	        author.setImageType(imageFile.getContentType());
+	    }
+
 	    authorService.save(author);
 	    return "redirect:/admin/indexAuthor";
 	}
+
+
 
 	// ====== MODIFICA AUTORE ======
 	@GetMapping("/admin/formUpdateAuthor")

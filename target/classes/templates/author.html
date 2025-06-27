@@ -1,43 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <title>Autore</title>
+    <meta charset="UTF-8">
+    <title>SiwBooks2 – Dettagli Autore</title>
     <link rel="stylesheet" href="/css/stile.css" />
 </head>
+
 <body>
+    <header>
+        <!-- Mostra solo se utente è autenticato -->
+        <div th:if="${userDetails != null}">
+            <span th:text="${userDetails.username}"></span>
+            <a href="/logout">Logout</a>
+        </div>
+        <!-- Mostra solo se utente NON è autenticato -->
+        <div th:if="${userDetails == null}">
+            <a href="/login">Login</a>
+        </div>
+    </header>
 
-<header>
-	<!-- Mostra solo se utente è autenticato -->
-	<div th:if="${userDetails != null}">
-		<span th:text="${userDetails.username}"></span> <a href="/logout">Logout</a>
-	</div>
-	<!-- Mostra solo se utente NON è autenticato -->
-	<div th:if="${userDetails == null}">
-		<a href="/login">Login</a>
-	</div>
-</header>
-
-<div>
-    <a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
-</div>
-
-<h1>Dettagli Autore</h1>
-
-<div th:if="${author}">
-    <!-- 👇 Immagine autore se presente -->
-    <div th:if="${author.image != null}">
-        <img th:src="@{'/author/image/' + ${author.id}}" alt="Foto autore" width="200" />
+    <div class="logo">
+        <a href="/"><img src="/images/logo-siw.png" alt="Logo SiwBooks2" width="20%"></a>
     </div>
 
-    <p><strong>Nome:</strong> <span th:text="${author.name}">Nome</span></p>
-    <p><strong>Cognome:</strong> <span th:text="${author.surname}">Cognome</span></p>
-    <p><strong>Data di nascita:</strong> <span th:text="${author.dateOfBirth}">gg/mm/aaaa</span></p>
-    <p><strong>Data di morte:</strong> <span th:text="${author.dateOfDeath}">gg/mm/aaaa</span></p>
-</div>
+    <h1>Dettagli Autore</h1>
 
-<div th:unless="${author}">
-    <p>Autore non trovato.</p>
-</div>
+    <!-- ==================== CARD AUTORE ==================== -->
+    <div class="author-details" th:if="${author}">
+        <img class="author-photo-large"
+             th:src="@{'/author/image/' + ${author.id}}"
+             alt="Foto autore"
+             width="200" height="200"
+             onerror="this.onerror=null;this.src='/images/default-author.png';">
 
+        <div class="author-meta">
+            <p><strong>Nome:</strong>
+               <span th:text="${author.name}">Nome</span></p>
+
+            <p><strong>Cognome:</strong>
+               <span th:text="${author.surname}">Cognome</span></p>
+
+            <p><strong>Data di nascita:</strong>
+               <span th:text="${author.dateOfBirth}">gg/mm/aaaa</span></p>
+
+            <p><strong>Data di morte:</strong>
+               <span th:text="${author.dateOfDeath}">gg/mm/aaaa</span></p>
+        </div>
+    </div>
+
+    <div class="empty-author" th:unless="${author}">
+        Autore non trovato.
+    </div>
 </body>
 </html>

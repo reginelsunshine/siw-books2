@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static it.uniroma3.siw.model.Credentials.ADMIN_ROLE;
-
+import static it.uniroma3.siw.model.Credentials.DEFAULT_ROLE;
 import javax.sql.DataSource;
 
 @Configuration
@@ -57,6 +57,13 @@ import javax.sql.DataSource;
                 .requestMatchers(HttpMethod.POST,"/register", "/login").permitAll()
                 .requestMatchers(HttpMethod.GET,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
                 .requestMatchers(HttpMethod.POST,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
+                /* 3) link recensione – solo utenti “normali”, NON admin  */
+                .requestMatchers(HttpMethod.GET ,
+                        "/book/{id}/review").hasAuthority(DEFAULT_ROLE)
+                .requestMatchers(HttpMethod.POST,
+                        "/book/{id}/review").hasAuthority(DEFAULT_ROLE)
+
+
         		// tutti gli utenti autenticati possono accere alle pagine rimanenti 
                 .anyRequest().authenticated()
                 // LOGIN: qui definiamo il login
