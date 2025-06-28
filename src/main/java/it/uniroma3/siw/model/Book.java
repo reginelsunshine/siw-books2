@@ -46,7 +46,7 @@ public class Book {
 		this.image = image;
 	}
 
-	@ManyToMany         /*un libro può essere scritto da uno o più autori e un autore può scrivere uno o 
+	@ManyToMany(fetch = FetchType.LAZY)         /*un libro può essere scritto da uno o più autori e un autore può scrivere uno o 
 	                      o più libri*/
 	private Set<Author> authors;
 

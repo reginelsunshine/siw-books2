@@ -52,7 +52,12 @@ public class BookController {
 		model.addAttribute("books", this.bookService.findAll()); //"books" è il nome che userò nella pagina HTML (Thymeleaf)
 		//this.bookService.findAll() chiama il servizio per ottenere la lista di libri
 		//bookService è un componente (@Service) che accede al database tramite BookRepository
+		  // Forza caricamento authors per evitare errori LazyInitialization
+		Iterable<Book> books = this.bookService.findAll();
 
+	    for (Book book : books) {
+	        book.getAuthors().size();
+	    }
 		return "books.html"; //Questo dice a Spring:"Dopo aver eseguito il metodo, mostra la pagina templates/books.html"
 	}
 

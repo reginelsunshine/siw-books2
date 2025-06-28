@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 
 <head>
 <meta charset="UTF-8">
@@ -44,7 +44,14 @@
 					th:href="@{'/book/' + ${book.id} + '/review'}"> Aggiungi
 					recensione </a>
 
+				<p class="book-authors">
+					Autori: <span th:each="author : ${book.authors}"
+						th:text="${author.name + ' ' + author.surname}"></span>
+				</p>
+
+
 			</div></li>
+		<!-- Visualizza gli autori -->
 	</ul>
 </body>
 </html>
