@@ -58,18 +58,31 @@ h1 {
   flex-direction: column;
   gap: 0.9rem;
   margin-bottom: 2rem;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .links-group a {
-  background: rgba(135, 135, 51, 0.8); /* main red */
+  background: rgba(135, 135, 51, 0.8); /* verde-oliva scuro */
   color: rgba(255, 255, 255, 1);  /* bianco */
   padding: 0.75em 1em;
   text-decoration: none;
   border-radius: 6px;
   font-weight: 600;
   transition: background 0.25s;
+  display: block;
+  text-align: center;
 }
 
 .links-group a:hover {
-  background: rgba(125, 0, 0, 1); /* main red light */
+  background: rgba(125, 0, 0, 1); /* rosso scuro */
+}
+
+/* ========== TITOLI ========= */
+h1 {
+  color: rgba(102, 0, 0, 1); /* main red */
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+  text-align: center; /* aggiunto per centrare il titolo */
 }

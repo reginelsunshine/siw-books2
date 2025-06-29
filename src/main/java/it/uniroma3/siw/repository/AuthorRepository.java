@@ -13,6 +13,8 @@ public interface AuthorRepository  extends CrudRepository<Author, Long>{
 	
 	Optional<Author> findById(Long id);
 	
+	
+	//nota bene: <operation>By<property><condition>OrderBy<property>Asc/Desc
 	List<Author> findAllByOrderBySurnameAscNameAsc();
 
 	boolean existsByNameIgnoreCaseAndSurnameIgnoreCaseAndDateOfBirth(String name, String surname,
@@ -22,5 +24,6 @@ public interface AuthorRepository  extends CrudRepository<Author, Long>{
 			LocalDate dateOfBirth, Long id);
 
 	boolean existsByNameAndSurnameAndDateOfBirth(String name, String surname, LocalDate dateOfBirth);
+	
 
 }

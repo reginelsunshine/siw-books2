@@ -20,7 +20,7 @@
 	</header>
 
 	<div class="logo">
-		<img src="/images/logo-siw.png" alt="Logo SiwBooks2" width="20%">
+		<a href="/"><img src="/images/logo-siw.png" alt="Logo SiwBooks2" width="20%"></a>
 	</div>
 
 	<h1>Libri</h1>
@@ -44,14 +44,12 @@
 					th:href="@{'/book/' + ${book.id} + '/review'}"> Aggiungi
 					recensione </a>
 
-				<p class="book-authors">
-					Autori: <span th:each="author : ${book.authors}"
-						th:text="${author.name + ' ' + author.surname}"></span>
-				</p>
+	
 
 
-			</div></li>
-		<!-- Visualizza gli autori -->
-	</ul>
+			</div>
+	 </li>
+
+</ul>
 </body>
 </html>

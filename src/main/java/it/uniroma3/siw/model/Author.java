@@ -93,7 +93,7 @@ public class Author {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 
 	public String getSurname() {
@@ -101,7 +101,7 @@ public class Author {
 	}
 
 	public void setSurname(String surname) {
-		this.surname = surname;
+		this.surname = surname.trim();
 	}
 
 	public LocalDate getDateOfBirth() {

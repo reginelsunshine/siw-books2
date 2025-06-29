@@ -26,7 +26,8 @@ public class AuthorValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Author author = (Author) target;
 
-        /* Nome */
+        /* Nome */ 
+        //utilizzo trim() per rimuovere eventuali spazi e controllo se il campo è vuoto
         if (author.getName() == null || author.getName().trim().isEmpty()) {
             errors.rejectValue("name", "author.name.required");
         }
