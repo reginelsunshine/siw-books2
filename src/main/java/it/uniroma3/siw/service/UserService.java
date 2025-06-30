@@ -57,5 +57,9 @@ public class UserService {
 		Optional<User> user = this.userRepository.findByName(name); 
 		return user.orElse(null); // restituisce l'utente o null se non trovato
 	}
+	
+	 public User getUserByUsername(String username) {
+	        return userRepository.findByUsername(username).orElse(null);
+	    }
 
 }

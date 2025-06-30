@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Book;
 import it.uniroma3.siw.model.Review;
+import it.uniroma3.siw.repository.BookRepository;
 import it.uniroma3.siw.controller.validator.BookValidator;
 import it.uniroma3.siw.model.Author;
 import it.uniroma3.siw.service.BookService;
@@ -37,6 +38,9 @@ public class BookController {
 	//ATTENZIONE, LA ROTTA /BOOK NON FUNZIONAVA PERCHE' HAI DIMENTICATO DI METTERE @AUTOWIRED ANCHE QUI SU bookService
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired 
+	private BookRepository bookRepository;
 
 	@Autowired
 	private AuthorService authorService;
@@ -53,11 +57,12 @@ public class BookController {
 		//this.bookService.findAll() chiama il servizio per ottenere la lista di libri
 		//bookService è un componente (@Service) che accede al database tramite BookRepository
 		  // Forza caricamento authors per evitare errori LazyInitialization
-		Iterable<Book> books = this.bookService.findAll();
-
-	    for (Book book : books) {
+		//Iterable<Book> books = this.bookService.findAll();
+		
+		
+	  /*  for (Book book : books) {
 	        book.getAuthors().size();
-	    }
+	    }*/
 		return "books.html"; //Questo dice a Spring:"Dopo aver eseguito il metodo, mostra la pagina templates/books.html"
 	}
 

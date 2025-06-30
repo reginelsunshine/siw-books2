@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Aggiungi Recensione</title>
-<link rel="stylesheet" href="/css/stile.css" />
+<link rel="stylesheet" href="/css/admin.css/admin-stile.css" />
 </head>
 <body>
 	<header>
@@ -16,30 +16,29 @@
 		</div>
 	</header>
 
-	<div>
-		<a href="/"><img src="/images/logo-siw.png" width="20%" /></a>
+
+	<div class="container">
+		<h1>Aggiungi una recensione</h1>
+
+		<form th:action="@{'/book/' + ${review.book.id} + '/review'}"
+			th:object="${review}" method="post">
+			<div>
+				<label for="title">Titolo:</label> <input type="text"
+					th:field="*{title}" />
+			</div>
+
+			<div>
+				<label for="content">Testo:</label>
+				<textarea th:field="*{content}"></textarea>
+			</div>
+
+			<div>
+				<label for="rating">Voto (1-5):</label> <input type="number"
+					th:field="*{rating}" min="1" max="5" />
+			</div>
+
+			<button type="submit">Invia recensione</button>
+		</form>
 	</div>
-
-	<h1>Aggiungi una recensione</h1>
-
-	<form th:action="@{'/book/' + ${review.book.id} + '/review'}"
-		th:object="${review}" method="post">
-		<div>
-			<label for="title">Titolo:</label> <input type="text"
-				th:field="*{title}" />
-		</div>
-
-		<div>
-			<label for="content">Testo:</label>
-			<textarea th:field="*{content}"></textarea>
-		</div>
-
-		<div>
-			<label for="rating">Voto (1-5):</label> <input type="number"
-				th:field="*{rating}" min="1" max="5" />
-		</div>
-
-		<button type="submit">Invia recensione</button>
-	</form>
 </body>
 </html>

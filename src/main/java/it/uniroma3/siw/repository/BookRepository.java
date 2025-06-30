@@ -18,6 +18,15 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
 	boolean existsByTitleIgnoreCaseAndYearOfPublicationAndIdNot(String title, Integer yearOfPublication, Long id);
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	Set<Book> findAllByOrderByTitleDesc();
 
 }

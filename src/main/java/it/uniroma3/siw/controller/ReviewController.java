@@ -23,47 +23,67 @@ import jakarta.validation.Valid;
 public class ReviewController {
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired 
 	BookService bookService;
-	
+
 	@Autowired
 	ReviewService reviewService;
-	
-	 @GetMapping("/book/{id}/review")
-	    public String showReviewForm(@PathVariable("id") Long bookId, Model model, Principal principal) {
-	        User user = userService.getUserByName(principal.getName());
-	        Book book = bookService.findById(bookId);
 
-	        if (reviewService.alreadyReviewed(book, user)) {
-	            return "redirect:/book/" + bookId; // o messaggio che esiste già
-	        }
+	@GetMapping("/book/{id}/review")
+	public String showReviewForm(@PathVariable("id") Long bookId, Model model, Principal principal) {
+		User user = userService.getUserByUsername(principal.getName());
 
-	        Review review = new Review();
-	        review.setBook(book);
-	        review.setUser(user);
+		Book book = bookService.findById(bookId);
 
-	        model.addAttribute("review", review);
-	        return "reviewForm";
-	    }
+		if (reviewService.alreadyReviewed(book, user)) {
+			return "redirect:/book/" + bookId; // o messaggio che esiste già
+		}
 
-	    @PostMapping("/book/{id}/review")
-	    public String submitReview(@PathVariable("id") Long bookId, @Valid @ModelAttribute("review") Review review,
-	                               BindingResult result, Model model, Principal principal) {
-	        if (result.hasErrors()) {
-	            return "reviewForm";
-	        }
-	        // Assicurati che sia una nuova review
-	        review.setId(null);// <- forza un nuovo inserimento , altrimenti non lo inserisce
+		Review review = new Review();
+		review.setBook(book);
+		review.setUser(user);
 
-	        Book book = bookService.findById(bookId);
-	        User user = userService.getUserByName(principal.getName());
+		model.addAttribute("review", review);
+		return "reviewForm";
+	}
 
-	        review.setBook(book);
-	        review.setUser(user);
-	        reviewService.save(review);
+	@PostMapping("/book/{id}/review")
+	public String submitReview(@PathVariable("id") Long bookId,
+			@Valid @ModelAttribute("review") Review review,
+			BindingResult result,
+			Model model,
+			Principal principal) {
 
-	        return "redirect:/book/" + bookId;
-	    }
+		if (result.hasErrors()) {
+			return "reviewForm";
+		}
+
+		// Forza nuovo inserimento
+		review.setId(null);
+
+		Book book = bookService.findById(bookId);
+		if (book == null) {
+			// gestione errore, libro non trovato
+			model.addAttribute("error", "Libro non trovato");
+			return "error";
+		}
+
+		User user = userService.getUserByUsername(principal.getName());
+
+		if (user == null) {
+			// gestione errore, utente non trovato
+			model.addAttribute("error", "Utente non trovato");
+			return "error";
+		}
+
+		review.setBook(book);
+		review.setUser(user);
+
+		reviewService.save(review);
+
+		return "redirect:/book/" + bookId;
+	}
+
 
 }

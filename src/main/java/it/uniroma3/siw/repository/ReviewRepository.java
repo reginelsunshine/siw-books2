@@ -10,4 +10,7 @@ import it.uniroma3.siw.model.User;
 
 public interface ReviewRepository extends CrudRepository<Review, Long> {
     Optional<Review> findByBookAndUser(Book book, User user);
+    
+  
+
 }
